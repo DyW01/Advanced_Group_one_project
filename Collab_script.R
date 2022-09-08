@@ -17,3 +17,14 @@ b <- 8
 library(fs)
 library(here)
 dir_tree(path = here())
+
+#additiona formula from habumugisha
+#assigned variable
+a<-9
+b<-10
+z<-a*b
+
+multiplication <-function(x,y){ 
+  d <- (x*y)
+  return(d)}
+ 
