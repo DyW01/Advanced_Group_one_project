@@ -11,8 +11,9 @@ b <- 8
 
 # add formula
 
-#Aditi
-# Making a tree
+#SS1801 and Aditi and akashi made same formula, se beloq
+
+#the main formula
 library(fs)
 library(here)
 dir_tree(path = here())
