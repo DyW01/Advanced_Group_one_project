@@ -9,6 +9,9 @@
 a <- 5
 b <- 8
 
+
+# Making a tree
+=======
 # add formula
 
 # Akash's addition
@@ -17,13 +20,20 @@ y<-9
 multiplication<- x*y
 
 
-# SS1801 and Aditi and akashi made same formula, se beloq
+# SS1801 and Aditi made same formula, se below
 
 # the main formula
+
 library(fs)
 library(here)
 dir_tree(path = here())
 
+#------- New addition from Aditi -------
+
+# I would like to add one more code. 
+vector_1 <- c("a", "b", "c
+")
+=======
 #additiona formula from habumugisha
 #assigned variable
 a<-9
