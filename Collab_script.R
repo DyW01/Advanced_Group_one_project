@@ -33,7 +33,7 @@ dir_tree(path = here())
 # I would like to add one more code. 
 vector_1 <- c("a", "b", "c
 ")
-=======
+
 #additiona formula from habumugisha
 #assigned variable
 a<-9
