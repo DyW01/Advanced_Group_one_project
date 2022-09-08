@@ -11,6 +11,9 @@ b <- 8
 
 # add formula
 
-#check my branch if it works or not (SS)
+#SS1801 and Aditi and akashi made same formula, se beloq
 
-#please have a look again 
+#the main formula
+library(fs)
+library(here)
+dir_tree(path = here())
