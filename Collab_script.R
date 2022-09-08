@@ -8,3 +8,5 @@
 #Assigning variables 
 a <- 5
 b <- 8
+
+# add formula
