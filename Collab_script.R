@@ -11,9 +11,15 @@ b <- 8
 
 # add formula
 
-#SS1801 and Aditi and akashi made same formula, se beloq
+# Akash's addition
+x<-7
+y<-9
+multiplication<- x*y
 
-#the main formula
+
+# SS1801 and Aditi and akashi made same formula, se beloq
+
+# the main formula
 library(fs)
 library(here)
 dir_tree(path = here())
