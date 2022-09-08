@@ -11,8 +11,7 @@ b <- 8
 
 
 # Making a tree
-=======
-# add formula
+# Add formula
 
 # Akash's addition
 x<-7
@@ -42,5 +41,6 @@ z<-a*b
 
 multiplication <-function(x,y){ 
   d <- (x*y)
-  return(d)}
+  return(d)
+  }
  
