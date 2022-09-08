@@ -10,3 +10,9 @@ a <- 5
 b <- 8
 
 # add formula
+
+#Aditi
+# Making a tree
+library(fs)
+library(here)
+dir_tree(path = here())
