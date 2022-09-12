@@ -22,5 +22,5 @@ my_data <- read_delim("exam_nontidy.txt", delim = "\t")
 
 view(my_data)
 
-
+skimr::skim(my_data)
 
