@@ -8,6 +8,18 @@
 #Finally we will write a report and submit
 
 
+#------ Description of dataset ----------#
+#Notes from codebook:
+
+#We have two cases of meningites:
+  #viral (abm = 0) vs. bacterial (abm = 1) cases. 
+  #Total of 581 patients, and missing data accordingly from n amount of patients
+  #There are samples from spinal fluid, and blood
+  #Cases from year 1968 to 1980
+  #Population race and sex are defined
+  #
+
+
 #------------------------ DAY_one -------------------------------------#
 
 #For orderly working progress, following steps are required:
