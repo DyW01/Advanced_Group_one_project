@@ -58,7 +58,7 @@ head(my_data$alder, 6)
 my_data$alder %>%
 head()
 
-#For exammyle, pipe opens the line and makes it more accessible
+#For example, pipe opens the line and makes it more accessible
 #using pivot function to transform to longer table
 my_data %>%
   pivot_longer(names_to = "Year",
