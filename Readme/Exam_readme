@@ -10,4 +10,13 @@
 
 #in your script, remember to load both tidyverse and here
 #then read file with read_delim. 
-#dont use the dot function, as this is not tidyverse function
+#dont use the dot function, as this is not tidyverse function+
+
+#-- TIDY taks -----
+
+
+#Now to seperate the tasks with the tidy process
+#SS seperate feature into sex and race
+#Akash rewriting age colum
+#Theo renaming date into date of birth
+#DYW Removing duplicated row
