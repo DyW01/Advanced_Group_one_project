@@ -18,6 +18,9 @@ view(read_delim("exam_nontidy.txt", delim = "\t"))
 #Theo renaming date into date of birth
 #DYW Removing duplicated row
 
+my_data <- read_delim("exam_nontidy.txt", delim = "\t")
+
+view(my_data)
 
 
 
