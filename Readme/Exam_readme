@@ -1,22 +1,41 @@
-# README_EXAM-----
+# -----README_EXAM-----#
 #This is our readme file for the exam. Our tasks are the folowing: 
-
-#Following steps are required. Make new branch with following name
-#name_of_cand_Exam_Branch
-#In your branch, create your script
-#name_of_Cand_Script
-#after working on our scripts, we will merge and work on main script, but diff parts
-
-
-#in your script, remember to load both tidyverse and here
-#then read file with read_delim. 
-#dont use the dot function, as this is not tidyverse function+
-
-#-- TIDY taks -----
+  #Day_one: Read and tidy
+    # Deligate tidying task among the group
+  #Day_two: Tidy, adjust and explore
+  #Day_three:Create plots
+  #Day_four: Analyze
+#Finally we will write a report and submit
 
 
-#Now to seperate the tasks with the tidy process
-#SS seperate feature into sex and race
-#Akash rewriting age colum
-#Theo renaming date into date of birth
-#DYW Removing duplicated row
+#------------------------ DAY_one -------------------------------------#
+
+#For orderly working progress, following steps are required:
+  #Delete your previous branch, and make new branch with following name:
+    #name_of_cand_Exam_Branch
+  #In your branch, create your script, with following name:
+    #name_of_Cand_Exam_Script
+
+#We will merge the scripts to main evantually. 
+
+#Before starting the task, do the following: 
+  #In your branch_script, load both "tidyverse" and "here" packages
+  #then read file with read_delim () function.
+    #within parantheses add filename
+  #NB! don't use the "dot" function (read.file()) | this is not   
+  #tidyverse function
+
+#--- Day_One_TIDY taks -----#
+
+#The candidates will do the following: 
+  #SS seperate feature into sex and race
+  #Akash rewriting age colum
+  #Theo renaming date into date of birth
+  #DYW Removing duplicated row, and merge files
+  #Aditi, read through readme and prepare
+    #exempted because of attendance in another appointemnt
+
+
+
+#------------------------ DAY_two -------------------------------------#
+#
