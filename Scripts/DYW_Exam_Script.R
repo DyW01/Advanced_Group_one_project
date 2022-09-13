@@ -75,3 +75,46 @@ data_untidy <-
 
 
 
+
+
+
+
+#Aditi and Shwesin
+
+data_untidy %>% 
+  count(race)
+
+race_change %>% 
+  count(race)
+
+
+#arrange 
+data_untidy <-
+  data_untidy %>% 
+  #  arrange(id) %>% - arranging in ascending order
+  arrange(desc(id))
+
+
+#creating new columns by using a separator 
+data_untidy <-
+  data_untidy %>% 
+  separate(date, 
+           into = c("year", "month"),
+           sep="-")
+
+#Drop columns
+data_untidy <-
+  data_untidy %>% 
+  subset(select = -c(gram, year, month))
+
+head(data_untidy)
+
+#Rounding off decimal points for numeric
+mutate_data <-
+  data_untidy %>% 
+  #  mutate(across(where(is.numeric), ~ round(., 2)))
+  mutate(age = as.numeric(age)) %>% 
+  mutate(across(.cols = age, ~round(.,digits = 3)))
+
+
+
