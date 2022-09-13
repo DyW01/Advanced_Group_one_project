@@ -360,3 +360,5 @@ view(tidy_data)
 tidy_data <-
   tidy_data %>% 
   mutate(blood_neut_pct = if_else(blood_neut_pct >35, "High", "Low"))
+
+
