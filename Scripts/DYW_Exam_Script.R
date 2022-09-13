@@ -118,3 +118,20 @@ mutate_data <-
 
 
 
+
+merged_exam_data <- 
+  data_untidy %>% 
+  mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
+  mutate(n_blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
+  mutate(n_blood_cult = round(n_blood_cult, digits = 0)) %>% 
+  mutate(n_sex = if_else(sex == "F", 1, 0)) %>% 
+  mutate(n_age_agm = age * abm ) %>% 
+  select(id,
+         sex,
+         age,
+         race,
+         starts_with("csf"),
+         starts_with("blood"),
+         everything()) %>% 
+  arrange(id) %>% 
+  full_join(join_data, by = "id")
