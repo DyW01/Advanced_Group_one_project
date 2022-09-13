@@ -37,7 +37,7 @@ head(my_data$`feature type`)
 myData <- my_data %>%
   pivot_wider(names_from = `feature type`,
               values_from = feature_value,
-              )
+              
 
 #check the results are true (the new columns are at the end)
 view(myData)
@@ -59,4 +59,19 @@ tidy_data <- my_data%>%
   rename(age = `1.age`)
 
 view(tidy_data)
-  
+
+#------Aditi_Exam_Branch ---------- TIDY RACE column--------------------------- #
+
+
+#Renaming the content of colomn 
+tidy_data <-
+  tidy_data %>% 
+  mutate(race = 
+           case_when(
+             race == "black" ~ "B",
+             race == "white" ~ "W",
+             race == "none" ~ NA_character_
+           ))
+
+
+#-------------------------#
