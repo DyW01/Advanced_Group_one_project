@@ -1,7 +1,7 @@
 #-----SCRIPT for konsultasjon ----- #
 #DO NOT RUN HERE, Copy everything and work on seperate branch or project#
 
----- Load nescessary data------#
+#---- Load nescessary data------#
 
 library(tidyverse)
 
