@@ -122,7 +122,7 @@ data_untidy <-
   mutate(sex = ifelse(sex == "female", "F", "M"))
 
 
-new_data <-
+data_untidy <-
   data_untidy %>% 
   mutate(race = 
            case_when(
@@ -133,7 +133,13 @@ new_data <-
 
 
 
-#arrange
+#arrange 
+data_untidy <-
+  data_untidy %>% 
+#  arrange(id) %>% - arranging in ascending order
+  arrange(desc(id))
+
+
 
 
 #Join two datasets 
