@@ -1,5 +1,8 @@
-#My branch script to tidy data
-#load packages
+#---------------------------The base script provided by and merged with contribution by DYW -----#
+
+#First step in making good script, is introducing code to load the packages
+#run codde below: 
+
 library(tidyverse)
 library ("here")
 
@@ -13,10 +16,10 @@ read_delim("exam_nontidy.txt", delim = "\t")
 my_data <- read_delim("exam_nontidy.txt", delim = "\t")
 my_data
 
-#View mydata | NB! if data table is too huge, not recommended
-view(my_data)
+#You can view by the function "view(name_of_dataframe), but NB! if data table is too huge, not recommended
 
-#To get more unique infor of data, use skimr func
+
+#To get more unique information of data, use skimr func
 skimr::skim(my_data)
 #Also identifying missing data 
 naniar::gg_miss_var((my_data))
@@ -39,8 +42,7 @@ myData <- my_data %>%
               values_from = feature_value)
               
 
-#check the results are true (the new columns are at the end)
-view(myData)
+#check the results are true (the new columns are at the end) by view function
 #and look at the selected column
 myData$`1.age`
 
@@ -48,7 +50,7 @@ myData$`1.age`
 myData <- myData %>%
   rename(age = `1.age`)
 #View changes
-View(myData)
+
 
 #trying to combine the aformentioned solution
 #Now to test if my combination by pipe is correct
@@ -77,4 +79,110 @@ tidy_data <-
 
 View(tidy_data)
 
-#-------------------------#
+#----------------Theo and DyW---------------------------#
+#The task was "a column showing sex as 0/1 (and NA for missing, if any)"
+#either solve with if
+tidy_data %>% 
+  mutate(n_sex = if_else(sex == "F", 1, 0)) 
+
+#however, better solution would be the following: 
+tidy_data <-
+  tidy_data %>% 
+  mutate(sex = 
+           case_when(
+             sex == "female" ~ "0",
+             sex == "male" ~ "1",
+             sex == "none" ~ NA_character_
+           ))
+
+
+#-----------------Aditi and Shwesin-----------------------------------#
+
+#-------------------------Rearanging and removing unnescessary column ----#
+
+#Starting by overviewing the coloumn race and counting
+tidy_data %>% 
+  count(race)
+
+race_change %>% 
+  count(race)
+
+
+#arrange in ascending order
+tidy_data <-
+  tidy_data %>% 
+  #  arrange(id) %>% - arranging in ascending order
+  arrange(asc(id))
+
+
+#creating new columns by using a separator 
+tidy_data <-
+  tidy_data %>% 
+  separate(date, 
+           into = c("year", "month"),
+           sep="-")
+
+#Drop columns
+tidy_data <-
+  tidy_data %>% 
+  subset(select = -c(gram, year, month))
+
+head(data_untidy)
+
+#Rounding off decimal points for numeric
+mutate_data <-
+  tidy_data %>% 
+  #  mutate(across(where(is.numeric), ~ round(., 2)))
+  mutate(age = as.numeric(age)) %>% 
+  mutate(across(.cols = age, ~round(.,digits = 3)))
+
+
+#----------------DYW -------------------#
+#to abovementioned data, adding the blood_cult to percentage mutation
+mutate_data <-
+  mutate_data %>%
+    mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
+
+
+#-----Finally merging all the content into one ------#
+#in the below pipe setup, the abovementioned steps are refined and combined
+#assigning the data as merged_exam_data
+#first mutation in coloumn n_blookd_neut_pt
+#second mutaiont is percentage in coloum blood_count, and so on
+
+merged_exam_data <- 
+ tidy_data %>% 
+  mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
+  mutate(n_blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
+  mutate(n_blood_cult = round(n_blood_cult, digits = 0)) %>% 
+  mutate(n_sex = if_else(sex == "F", 1, 0)) %>% 
+  mutate(n_age_agm = age * abm ) %>% 
+  select(id,
+         sex,
+         age,
+         race,
+         starts_with("csf"),
+         starts_with("blood"),
+         everything()) %>% 
+  arrange(id) %>% 
+  full_join(join_data, by = "id")
+
+
+#However, if we wish to continue on from the step where we assigned mutate_data, following code can run: 
+
+merged_exam_data <- 
+ tidy_data %>% 
+  mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
+  mutate(n_age_agm = age * abm ) %>% 
+  select(id,
+         sex,
+         age,
+         race,
+         starts_with("csf"),
+         starts_with("blood"),
+         everything()) %>% 
+  arrange(id) %>% 
+  full_join(join_data, by = "id")
+
+#-------------------------------------------#
+#other solutions:
