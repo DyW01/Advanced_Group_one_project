@@ -77,4 +77,24 @@ tidy_data <-
 
 View(tidy_data)
 
-#-------------------------#
+#-------------THEO/DYW contribution ------------#
+
+#Firstly renaming the content of sex column
+tidy_data <-
+  tidy_data %>% 
+  mutate(sex = 
+           case_when(
+             sex == "female" ~ "0",
+             sex == "male" ~ "1",
+             sex == "none" ~ NA_character_
+           ))
+
+#Task is to show blood_cult as a percentage of highest possible value (11)
+#Make sure and mutate colomn blood_cult as numeric 
+tidy_data <-tidy_data%>%
+  mutate(blood_cult = as.numeric(blood_cult))
+
+#First duplicate blood_cult (NOT WORKING)
+tidy_data <- tidy_data%>%
+  mutate(blood_cult = blood_cult)
+
