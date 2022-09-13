@@ -99,10 +99,15 @@ tidy_data <-
 #-------------------------------------DYW-----------------------------#
 #Task is to show blood_cult as a percentage of highest possible value (11)
 #Make sure and mutate colomn blood_cult as numeric 
-tidy_data <- tidy_data%>%
-    mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE))
-  
 
+mutate_data <-
+  mutate_data %>%
+  mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE))%>%
+  mutate(blood_cult = as.numeric(blood_cult)) %>% 
+  mutate(across(.cols = blood_cult, ~round(.,digits = 1)))
+
+
+view(mutate_data)
 
 #-----------------Aditi and Shwesin-----------------------------------#
 
@@ -111,17 +116,19 @@ tidy_data <- tidy_data%>%
 #Step_one: Starting by overviewing the coloumn race and counting
 tidy_data %>% 
   count(race)
-
-race_change %>% 
-  count(race)
-
-
+###############################################################
+#neeed to look at this step together?
+#race_change %>% 
+  #count(race)
+#________
+#############################################################
+#DO WE WANT THIS???? (DYW)
 #arrange in descending order
 tidy_data <-
   tidy_data %>% 
   #  arrange(id) %>% - arranging in descending order
   arrange(desc(id))
-
+##################################################################
 
 #creating new columns by using a separator 
 tidy_data <-
@@ -135,7 +142,7 @@ tidy_data <-
   tidy_data %>% 
   subset(select = -c(gram, year, month))
 
-head(data_untidy)
+head(tidy_data)
 
 #Rounding off decimal points for numeric
 mutate_data <-
@@ -144,12 +151,6 @@ mutate_data <-
   mutate(age = as.numeric(age)) %>% 
   mutate(across(.cols = age, ~round(.,digits = 3)))
 
-
-#----------------DYW -------------------#
-#to abovementioned data, adding the blood_cult to percentage mutation
-mutate_data <-
-  mutate_data %>%
-    mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
 
 #-------------The almost completed tidyin -----#
 #remaining tasks mutating value of neutrophiles as low or high
@@ -171,17 +172,14 @@ merged_exam_data <- tidy_data %>%
 #-----------------------------------Final thought--------------------#
 
 #----- Improved script after seeing all the mutation--------------------#
-#in the below pipe setup, the abovementioned steps are refined and combined
-#assigning the data as merged_exam_data
-#first mutation in coloumn n_blookd_neut_pt
-#second mutaiont is percentage in coloum blood_count, and so on
-
+#in the below pipe setup, some of the abovementioned steps are refined and combined
+#they are now assigned to object merge_exam_data
 merged_exam_data <- 
  tidy_data %>% 
-  mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
-  mutate(n_blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
-  mutate(n_blood_cult = round(n_blood_cult, digits = 0)) %>% 
-  mutate(n_sex = if_else(sex == "F", 1, 0)) %>% 
+  mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
+  mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
+  mutate(blood_cult = round(n_blood_cult, digits = 0)) %>% 
+  mutate(sex = if_else(sex == "F", 1, 0)) %>% 
   mutate(n_age_agm = age * abm ) %>% 
   select(id,
          sex,
@@ -190,9 +188,10 @@ merged_exam_data <-
          starts_with("csf"),
          starts_with("blood"),
          everything()) %>% 
-  arrange(id) %>% 
-  full_join(join_data, by = "id")
+  arrange(id) %>% # THIS LAST CODE IS NOT WORKING
+  full_join(join_data, by = "id") #CODE PART NOT WORKING
 
 #-------------------------------------------#
 #other solutions:
+#See the new script: Exam_Collab_Script_Tidy_Group_One
 
