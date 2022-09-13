@@ -43,5 +43,25 @@ myData <-read_delim("exam_nontidy.txt", delim = "\t")
   myData %>%   #this works!!!!
     pivot_wider(names_from = "feature type", values_from = "feature_value")
   
+  myData<-
+  myData %>%  
+    pivot_wider(names_from = "feature type", values_from = "feature_value")
   
+ 
+    
+  print(colnames("sex"))
+  
+  print(colnames("race"))
+  
+  print(colnames("id"))
+  
+  myData<-
+  myData %>% 
+    select(id, date,race, sex,  everything()) 
+  
+  
+  myData<-
+    myData %>% 
+    select(id,) 
+    
   
