@@ -60,3 +60,18 @@ tidy_data <- my_data%>%
 
 view(tidy_data)
 
+
+
+
+#Aditi 
+data_untidy <-
+  data_untidy %>% 
+  mutate(race = 
+           case_when(
+             race == "black" ~ "B",
+             race == "white" ~ "W",
+             race == "none" ~ NA_character_
+           ))
+
+
+
