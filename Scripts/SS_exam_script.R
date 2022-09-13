@@ -63,6 +63,9 @@ myData <-read_delim("exam_nontidy.txt", delim = "\t")
   myData<-
     myData %>% 
     select(id,) 
+  
+  myData <- myData %>%
+    rename(age = `1.age`) 
     
   #Aditi Branch
   #--------------------------------------------#
@@ -206,3 +209,154 @@ myData <-read_delim("exam_nontidy.txt", delim = "\t")
   #Join two datasets 
   
   
+  
+  #My branch script to tidy data
+  #load packages
+  library(tidyverse)
+  library ("here")
+  
+  #Reading the text file
+  read_delim("exam_nontidy.txt", delim = "\t")
+  
+  #Followinge error: 'exam_nontidy.txt' does not exist...
+  #Change directory in settings in the files pane
+  
+  #Assign datafile to name, my_data
+  my_data <- read_delim("exam_nontidy.txt", delim = "\t")
+  my_data
+  
+  #View mydata | NB! if data table is too huge, not recommended
+  view(my_data)
+  
+  #To get more unique infor of data, use skimr func
+  skimr::skim(my_data)
+  #Also identifying missing data 
+  naniar::gg_miss_var((my_data))
+  
+  #When SS changes feature into "sex" and "race",then
+  #ID duplicate problem will be resolved after abovementioned
+  
+  #My solution to SS assignment is to transform from long to wide table
+  #`feature type` to "sex" and "race" and insert value from feature_value
+  
+  
+  #I just want to find the column and observe head values
+  my_data$`feature type`
+  head(my_data$`feature type`)
+  
+  #Now using pipe transform them stepwise with pivot_wider
+  
+  myData <- my_data %>%
+    pivot_wider(names_from = `feature type`,
+                values_from = feature_value,
+    )
+  
+  #check the results are true (the new columns are at the end)
+  view(myData)
+  #and look at the selected column
+  myData$`1.age`
+  
+  #Now rename column 1.age to age be using function rename
+  myData <- myData %>%
+    rename(age = `1.age`)
+  #View changes
+  View(myData)
+  
+  #trying to combine the aformentioned solution
+  #Now to test if my combination by pipe is correct
+  #I will tranform the nontidy "my_data" (and not myDATA) to tidy_data
+  tidy_data <- my_data%>%
+    pivot_wider(names_from = `feature type`,
+                values_from = feature_value,)%>%
+    rename(age = `1.age`)
+  
+  view(tidy_data)
+  
+ 
+   tidy_data <-
+    
+    tidy_data %>% 
+    pivot_wider(names_from = "date",
+                values_from = "date",
+    )
+   
+   
+   tidy_data %>% 
+  tidy_data %>% 
+  separate(date,  
+           into = c ("year", "month"),
+           sep = "-")
+  
+
+tidy_data = tidy_data[,grep("^7", names (tidy_data))]
+
+tidy_data <- myData
+
+myData<-
+myData %>% 
+  separate(date,  
+           into = c ("year", "month"),
+           sep = "-")
+         
+tidy_data<-
+  tidy_data %>% 
+  separate(date,  
+           into = c ("year", "month"),
+           sep = "-")
+
+view (tidy_data)
+
+drop <- c("gram")
+
+tidy_data<-
+  
+  drop <- c("gram")
+  
+view (tidy_data)
+
+remove(drop)
+tidy_data <- myData
+
+tidy_data <- 
+  
+  tidy_data %>%
+  subset (select = -c (gram))
+
+view (tidy_data)
+
+tidy_data <- 
+  
+  tidy_data %>%
+  subset (select = -c (month))
+
+view (tidy_data)
+
+tidy_data <- 
+  
+  tidy_data %>%
+  subset (select = -c (year))
+
+view (tidy_data)
+
+
+head(tidy_data) 
+summary(tidy_data)
+glimpse(tidy_data)
+
+tidy_data <- 
+  tidy_data %>%
+  
+mutate (age = as.numeric(age))%>%
+  mutate(across(.col=age, ~round(.,digits =3)))
+
+tidy_data <- 
+  tidy_data %>%
+  
+  mutate (blood_wbc = as.numeric(blood_wbc))%>%
+  mutate(across(.col=blood_wbc, ~round(.,digits =3)))
+
+view(tidy_data)
+
+tidy_data <-
+  tidy_data %>% 
+  mutate(blood_neut_pct = if_else(blood_neut_pct >35, "High", "Low"))
