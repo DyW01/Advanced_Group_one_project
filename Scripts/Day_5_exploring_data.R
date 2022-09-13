@@ -56,20 +56,20 @@ head(my_data$alder, 6)
 #Using pipe, we start from the inside (aka variable) and working outwards with
 #the functions we wish to apply to the variable. Thus a better setup
 my_data$alder %>%
-head()
+  head()
 
 #For example, pipe opens the line and makes it more accessible
 #using pivot function to transform to longer table
 my_data %>%
   pivot_longer(names_to = "Year",
-                values_to = "nConsultation",
-                cols = 4:12)
+               values_to = "nConsultation",
+               cols = 4:12)
 
 #another way to do it
 my_data %>%
   pivot_longer(names_to = "Year",
-                values_to = "nConsultation",
-                cols = `2012`:`2020`)
+               values_to = "nConsultation",
+               cols = `2012`:`2020`)
 
 view(my_data)
 #So far the data has not been changed, thus you can only veiw on console
@@ -92,7 +92,7 @@ my_data %>%
 my_data %>%
   separate(col = alder,
            into = c("minage", "maxAge"),
-                   sep = "-")
+           sep = "-")
 #the warning message tells me that the values are not fitting 
 #check the values, and you will see that "dash" is making a problem
 
@@ -118,4 +118,3 @@ my_data %>%
 filename <- paste0("tidy_consultations_", sys.date(),".txt")
 write_delim(my_data,
             file = here("Data", "my_data_12_09_22"), delim = "\t")
-  
