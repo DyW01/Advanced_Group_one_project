@@ -16,6 +16,7 @@ library(here)
 
 read_delim("exam_nontidy.txt", delim = "\t")
 data_untidy <- read_delim("exam_nontidy.txt", delim = "\t")
+new_data <- read_delim("exam_nontidy.txt", delim = "\t")
 
 #view(data_untidy) - not recommended for large datasets
 head(data_untidy) # columns store values as <chr> which need to be converted to <numeric>
@@ -115,8 +116,12 @@ data_untidy <-
 
 new_data <-
   data_untidy %>% 
-  mutate(race = ifelse(race, "black", "B"),
-         ifelse(race, "white","W"))
+  mutate(race = 
+           case_when(
+             race == "black" ~ "B",
+             race == "white" ~ "W",
+             race == "none" ~ NA_character_
+               ))
 
 
 
@@ -124,5 +129,5 @@ new_data <-
 #Day 6
 #--------------------------------------------#
 
-
+#Join two datasets 
 
