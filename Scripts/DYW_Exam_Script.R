@@ -180,7 +180,7 @@ merged_exam_data <-
   mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
   mutate(blood_cult = round(n_blood_cult, digits = 0)) %>% 
   mutate(sex = if_else(sex == "F", 1, 0)) %>% 
-  mutate(n_age_agm = age * abm ) %>% 
+  mutate(age_agm = age * abm ) %>% 
   select(id,
          sex,
          age,

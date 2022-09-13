@@ -22,13 +22,13 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   pivot_wider(names_from = `feature type`,
               values_from = feature_value,)%>%  #Eradicating duplicates by pivot
   rename(age = `1.age`)%>%        #Renaming unfortunate column name
-  separate(date, 
+  separate(date,                  #Better visualization be seperating column
            into = c("year", "month"),
            sep="-")%>%
-  subset(select = -c(gram, year, month))%>%
-  mutate(age = as.numeric(age)) %>% 
-  mutate(across(.cols = age, ~round(.,digits = 3)))%>% 
-  mutate(race = 
+  subset(select = -c(gram, year, month))%>%  #Removing excessive column
+  mutate(age = as.numeric(age)) %>%         #Defining column content as numerical
+  mutate(across(.cols = age, ~round(.,digits = 3)))%>% #Keeping to three decimal
+  mutate(race =                         #Abbreviating the content in column
            case_when(
              race == "black" ~ "B",
              race == "white" ~ "W",
@@ -42,9 +42,9 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
            ))%>%
   mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
   mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
-  mutate(blood_cult = round(blood_cult, digits = 0))%>% 
-  mutate(blood_wbc = round(blood_wbc, digits = 1))
-  mutate(n_age_agm = age * abm ) %>% 
+  mutate(blood_cult = round(blood_cult, digits = 0))%>% #Keeping to nearest whole number
+  mutate(blood_wbc = round(blood_wbc, digits = 1))%>%     #keeping 1 decimal
+  mutate(age_agm = age * abm )%>%   #numeric column showing multiplication of age and abm 
   select(id,
          sex,
          age,
@@ -52,8 +52,8 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
          starts_with("csf"),
          starts_with("blood"),
          everything())
-
   
+
 
 #When everyone agrees, and if no more is to be added, we can code for savefile
   
