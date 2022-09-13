@@ -7,8 +7,9 @@
 library(tidyverse)
 library(here)
 #Change working directory
-
-
+#ls() - files in environment
+#remove(ls()) - removes all files in environment OBS!
+#dir() - files in directory
 
 #Load file into work environment
 #Separate columns using delimiter ("tab" - \t)
@@ -46,6 +47,10 @@ data_untidy <-
   data_untidy %>% 
   select(id, sex, race, starts_with("csf"), starts_with("blood"))
 
+data_untidy <- 
+  data_untidy %>% 
+  select(id, sex, race, everything())
+
 
 #Provides summary statistics - missing, complete, n and sd
 #https://www.rdocumentation.org/packages/skimr/versions/2.1.4
@@ -66,6 +71,7 @@ data_untidy$`feature type` %>%
 
 
 #Rename column name to "feature_type"
+#A good practice to change names which start with numbers or have spaces
 #data_untidy <- rename(data_untidy, feature_type = `feature type`)
 data_untidy <-
   data_untidy %>% 
@@ -99,5 +105,24 @@ data_untidy %>%
 #Removes column "ID_new"
 new_data <- subset(data_untidy, 
                    select = -c(ID_new))
+remove(new_data) #removes dataset from the evironment
+
+
+data_untidy <-
+  data_untidy %>% 
+  mutate(sex = ifelse(sex == "female", "F", "M"))
+
+
+new_data <-
+  data_untidy %>% 
+  mutate(race = ifelse(race, "black", "B"),
+         ifelse(race, "white","W"))
+
+
+
+#--------------------------------------------#
+#Day 6
+#--------------------------------------------#
+
 
 
