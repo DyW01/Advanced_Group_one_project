@@ -4,7 +4,9 @@
 #run codde below: 
 
 library(tidyverse)
-library ("here")
+library (here)
+here ()
+
 
 #Reading the text file
 read_delim("exam_nontidy.txt", delim = "\t")
@@ -79,11 +81,6 @@ tidy_data <-
 
 View(tidy_data)
 
-<<<<<<< HEAD
-#-------------THEO/DYW contribution ------------#
-
-#Firstly renaming the content of sex column
-=======
 #----------------Theo and DyW---------------------------#
 #The task was "a column showing sex as 0/1 (and NA for missing, if any)"
 #either solve with if
@@ -91,7 +88,6 @@ tidy_data %>%
   mutate(n_sex = if_else(sex == "F", 1, 0)) 
 
 #however, better solution would be the following: 
->>>>>>> 10aa4382315066193e8bb4471e626471532adcaf
 tidy_data <-
   tidy_data %>% 
   mutate(sex = 
@@ -100,24 +96,19 @@ tidy_data <-
              sex == "male" ~ "1",
              sex == "none" ~ NA_character_
            ))
-
-<<<<<<< HEAD
+#-------------------------------------DYW-----------------------------#
 #Task is to show blood_cult as a percentage of highest possible value (11)
 #Make sure and mutate colomn blood_cult as numeric 
-tidy_data <-tidy_data%>%
-  mutate(blood_cult = as.numeric(blood_cult))
-
-#First duplicate blood_cult (NOT WORKING)
 tidy_data <- tidy_data%>%
-  mutate(blood_cult = blood_cult)
+    mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE))
+  
 
-=======
 
 #-----------------Aditi and Shwesin-----------------------------------#
 
-#-------------------------Rearanging and removing unnescessary column ----#
+#Task: Rearanging and removing unnescessary column
 
-#Starting by overviewing the coloumn race and counting
+#Step_one: Starting by overviewing the coloumn race and counting
 tidy_data %>% 
   count(race)
 
@@ -125,11 +116,11 @@ race_change %>%
   count(race)
 
 
-#arrange in ascending order
+#arrange in descending order
 tidy_data <-
   tidy_data %>% 
-  #  arrange(id) %>% - arranging in ascending order
-  arrange(asc(id))
+  #  arrange(id) %>% - arranging in descending order
+  arrange(desc(id))
 
 
 #creating new columns by using a separator 
@@ -160,8 +151,26 @@ mutate_data <-
   mutate_data %>%
     mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
 
+#-------------The almost completed tidyin -----#
+#remaining tasks mutating value of neutrophiles as low or high
+#expressing age as age*abm
+#rearange
+#assigning the tidy data a name 
+merged_exam_data <- tidy_data %>%
+  mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
+  mutate(age_agm = age * abm ) %>% 
+  select(id,
+         sex,
+         age,
+         race,
+         starts_with("csf"),
+         starts_with("blood"),
+         everything()) %>% 
+  arrange(id) %>% 
+  full_join(join_data, by = "id")
+#-----------------------------------Final thought--------------------#
 
-#-----Finally merging all the content into one ------#
+#----- Improved script after seeing all the mutation--------------------#
 #in the below pipe setup, the abovementioned steps are refined and combined
 #assigning the data as merged_exam_data
 #first mutation in coloumn n_blookd_neut_pt
@@ -184,23 +193,6 @@ merged_exam_data <-
   arrange(id) %>% 
   full_join(join_data, by = "id")
 
-
-#However, if we wish to continue on from the step where we assigned mutate_data, following code can run: 
-
-merged_exam_data <- 
- tidy_data %>% 
-  mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
-  mutate(n_age_agm = age * abm ) %>% 
-  select(id,
-         sex,
-         age,
-         race,
-         starts_with("csf"),
-         starts_with("blood"),
-         everything()) %>% 
-  arrange(id) %>% 
-  full_join(join_data, by = "id")
-
 #-------------------------------------------#
 #other solutions:
->>>>>>> 10aa4382315066193e8bb4471e626471532adcaf
+
