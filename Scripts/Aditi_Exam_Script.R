@@ -109,6 +109,14 @@ new_data <- subset(data_untidy,
 remove(new_data) #removes dataset from the evironment
 
 
+
+
+#--------------------------------------------#
+#Day 6
+#--------------------------------------------#
+
+
+#Two ways of using if-else statements 
 data_untidy <-
   data_untidy %>% 
   mutate(sex = ifelse(sex == "female", "F", "M"))
@@ -121,13 +129,12 @@ new_data <-
              race == "black" ~ "B",
              race == "white" ~ "W",
              race == "none" ~ NA_character_
-               ))
+           ))
 
 
 
-#--------------------------------------------#
-#Day 6
-#--------------------------------------------#
+#arrange
+
 
 #Join two datasets 
 
