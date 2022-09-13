@@ -36,7 +36,7 @@ head(my_data$`feature type`)
 
 myData <- my_data %>%
   pivot_wider(names_from = `feature type`,
-              values_from = feature_value,
+              values_from = feature_value)
               
 
 #check the results are true (the new columns are at the end)
@@ -62,6 +62,8 @@ view(tidy_data)
 
 #------Aditi_Exam_Branch ---------- TIDY RACE column--------------------------- #
 
+tidy_data%>%
+  count(race)
 
 #Renaming the content of colomn 
 tidy_data <-
@@ -73,5 +75,6 @@ tidy_data <-
              race == "none" ~ NA_character_
            ))
 
+View(tidy_data)
 
 #-------------------------#
