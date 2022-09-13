@@ -77,12 +77,10 @@ data_untidy$`feature type` %>%
 data_untidy <-
   data_untidy %>% 
   rename(feature_type = `feature type`,
-         age_1 = `1.age`)
+         age = `1.age`)
 
 #Pivot "feature type" into "sex" and "race"
 data_untidy <- pivot_wider(data_untidy, names_from = feature_type, values_from = feature_value )
-
-#Date - two columns - year and month
 
 
 #Turning a string column into numeric 
@@ -126,11 +124,17 @@ data_untidy <-
   data_untidy %>% 
   mutate(race = 
            case_when(
-             race == "black" ~ "B",
-             race == "white" ~ "W",
+             race == "black" ~ "black",
+             race == "white" ~ "white",
              race == "none" ~ NA_character_
            ))
 
+
+data_untidy %>% 
+  count(race)
+
+race_change %>% 
+  count(race)
 
 
 #arrange 
@@ -140,7 +144,25 @@ data_untidy <-
   arrange(desc(id))
 
 
+#creating new columns by using a separator 
+data_untidy <-
+  data_untidy %>% 
+  separate(date, 
+           into = c("year", "month"),
+           sep="-")
 
+#Drop columns
+data_untidy <-
+  data_untidy %>% 
+  subset(select = -c(gram, year, month))
 
-#Join two datasets 
+head(data_untidy)
+
+#Rounding off decimal points for numeric
+mutate_data <-
+  data_untidy %>% 
+#  mutate(across(where(is.numeric), ~ round(., 2)))
+  mutate(age = as.numeric(age)) %>% 
+  mutate(across(.cols = age, ~round(.,digits = 3)))
+
 
