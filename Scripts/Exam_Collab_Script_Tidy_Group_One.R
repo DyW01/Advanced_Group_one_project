@@ -8,12 +8,13 @@
 library(tidyverse)
 library(here)
 
-#Step 2 - Reading the text file, make sure directory is correct
+#Step 2 - Reading the text files, make sure directory is correct
 read_delim("exam_nontidy.txt", delim = "\t")
+read_delim("exam_joindata.txt", delim = "\t")
 
 #Step 3 - assigning file an object
 my_data <- read_delim("exam_nontidy.txt", delim = "\t")
-
+my_join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
 #Step 4 - The Pipe setup of multiple tidy mutations and transfomation
 #----------------Will yield to the tidiest data -------------------#
@@ -51,10 +52,14 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
          race,
          starts_with("csf"),
          starts_with("blood"),
-         everything())
+         everything()) %>%
+  full_join(my_join_data,by = ("id")) #joining the join data file to the mutated my_data
   
-
 
 #When everyone agrees, and if no more is to be added, we can code for savefile
   
 view(tidy_data)
+
+
+
+
