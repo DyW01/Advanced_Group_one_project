@@ -273,7 +273,7 @@ myData <-read_delim("exam_nontidy.txt", delim = "\t")
   view(tidy_data)
   
  
-   tidy_data <-
+   tidy_data <-  #it works but made the data crazy 
     
     tidy_data %>% 
     pivot_wider(names_from = "date",
@@ -355,7 +355,20 @@ tidy_data <-
   mutate (blood_wbc = as.numeric(blood_wbc))%>%
   mutate(across(.col=blood_wbc, ~round(.,digits =3)))
 
-view(tidy_data)
+
+
+#create temporary dataset 
+tempdata<- tidy_data
+tidy_data %>%
+  tempdata$blood_neut_pct2 <- c("m", "m", "f", "f", "m") 
+
+remove (tempdata)
+
+# Add a new column called blood_neut_pct2 to tidy_data
+tempdata<- tidy_data
+tidy_data %>%
+tidy_data$blood_neut_pct2 <- c("m", "m", "f", "f", "m")
+
 
 tidy_data <-
   tidy_data %>% 
