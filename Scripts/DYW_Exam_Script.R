@@ -118,7 +118,7 @@ mutate_data <-
 
 
 
-
+#Day 6 - pipeline
 merged_exam_data <- 
   data_untidy %>% 
   mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
