@@ -183,7 +183,7 @@ tidy_data <-
   tidy_data %>%
   subset(select = -c(gram, year, month))
 
-merged_exam_data <- 
+tidy_data <- 
   tidy_data %>% 
   mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
   mutate(n_blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
@@ -197,13 +197,33 @@ merged_exam_data <-
          starts_with("csf"),
          starts_with("blood"),
          everything()) %>% 
-  arrange(id) %>% 
+  arrange(id)
+
+%>% 
   full_join(join_data, by = "id")
 
 #Data exploration
 file <- merged_exam_data
 skimr::skim(file) 
 naniar::gg_miss_var(file)
+
+
+summarize(consultations_gp)
+
+
+tidy_data %>%
+  group_by(race) %>% 
+  summarise(across(where(is.numeric), mean))
+
+            
+    
+    max( na.rm = T),
+            min( na.rm = T),
+            mean( na.rm = T))
+
+
+head(tidy_data)
+
 
 # Comment on the missing variables
 # Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
