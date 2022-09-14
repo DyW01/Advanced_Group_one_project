@@ -102,6 +102,7 @@ table(blood_gluc)
 
 #Day 8: Analyse the dataset and answer the following questions: (each person chooses one question)
 #Is there a difference in the occurrence of the disease by sex? (DYW)
+
 #Look at this tomorrow
 
 
