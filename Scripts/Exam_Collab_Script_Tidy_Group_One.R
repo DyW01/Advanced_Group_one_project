@@ -16,6 +16,7 @@ read_delim("exam_joindata.txt", delim = "\t")
 my_data <- read_delim("exam_nontidy.txt", delim = "\t")
 my_join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
+
 #Step 4 - The Pipe setup of multiple tidy mutations and transfomation
 #----------------Will yield to the tidiest data -------------------#
 
@@ -47,19 +48,16 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   mutate(blood_wbc = round(blood_wbc, digits = 1))%>%     #keeping 1 decimal
   mutate(age_agm = age * abm )%>%   #numeric column showing multiplication of age and abm 
   select(id,
-         sex,
          age,
+         sex,
          race,
          starts_with("csf"),
          starts_with("blood"),
          everything()) %>%
   full_join(my_join_data,by = ("id")) #joining the join data file to the mutated my_data
-  
 
+ 
 #When everyone agrees, and if no more is to be added, we can code for savefile
   
 view(tidy_data)
-
-
-
 
