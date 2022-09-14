@@ -22,8 +22,11 @@ tidy_data <- myData%>%   #Assign our transformed data to object
            into = c("year", "month"),
            sep="-")%>%
   subset(select = -c(gram, year, month))%>%  #Removing excessive column
-  mutate(age = as.numeric(age)) %>%         #Defining column content as numerical
-  mutate(across(.cols = age, ~round(.,digits = 3)))%>% #Keeping to three decimal
+  mutate(age = as.numeric(age),       #Defining column content as numerical
+         blood_cult = as.numeric(blood_cult), 
+         blood_wbc = as.numeric(blood_wbc))%>%
+  mutate(across(.cols = age, ~round(.,digits = 3)), #Keeping to three decimal
+         across(.cols = blood_wbc, ~round(.,digits = 1)))%>%
   mutate(race =                         #Abbreviating the content in column
            case_when(
              race == "black" ~ "B",
@@ -38,10 +41,7 @@ tidy_data <- myData%>%   #Assign our transformed data to object
            ))%>%
   mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
   mutate(percentage_blood_cult = (blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE))) %>%
-  mutate(blood_cult = as.numeric(blood_cult))%>% #Defining column content as numerical
-  mutate(blood_cult = round(blood_cult, digits = 0))%>% #Keeping to nearest whole number
-  mutate(blood_wbc = as.numeric(blood_wbc))%>% #Defining column content as numerical
-  mutate(blood_wbc = round(blood_wbc, digits = 1))%>%     #keeping 1 decimal
+  mutate(percentage_blood_cult = round(blood_cult, digits = 0))%>% #Keeping to nearest whole number
   mutate(age_agm = age * abm )%>%   #numeric column showing multiplication of age and abm 
   select(id,
          age,
@@ -49,6 +49,7 @@ tidy_data <- myData%>%   #Assign our transformed data to object
          race,
          starts_with("csf"),
          starts_with("blood"),
+         starts_with("percentage"),
          everything()) %>%
   full_join(myJoindata,by = ("id")) #joining the join data file to the mutated tidy_data
 
@@ -62,13 +63,18 @@ summary(tidy_data)
 
 #testing summary of selected column (blood_cult, female, etc)
 tidy_data%>%
-  summary(tidy_data$blood_cult, blood_cult == 0, #persons with blood_cult == 0
-          tidy_data$sex, sex = 0, #Only for females
+  summary(tidy_data$blood_cult) #persons with blood_cult == 0 [NOT WORKING in pipe NOW, NB changed tidy_data pipe]
+                                #Does not let med add blood_cult == 0
+tidy_data%>%
+  summary(tidy_data$sex, sex = 0, #Only for females [From here and down it is working]
           tidy_data$age, age> 45, #Only for persons older than 45
           tidy_data$race, race = B, #Only black
           tidy$blood_gluc, blood_gluc > 120) #Only glucose over 120
 
+
+
 #Use two categorical columns in your dataset to create a table (hint: ?count)
+#[Found a method without count...]
 Tabel1 <-
   tidy_data%>%
   drop_na(sex,   #remove missing values to make less messy table
@@ -91,13 +97,11 @@ Tabel2 <-
             Upper = max(blood_gluc), 
             Difference = max(blood_gluc) - min(blood_gluc)) %>%
   arrange(Average)%>%
-  view() #Code worksbut NA is not dropped from blood_gluc
-
-#Other way of making table
-table(blood_gluc)
+  view() 
 
 #Does the glucose level in blood depend on sex? 
-#Viewing the information in table2 as graphs to see for correlation
+#Assuming this task can be solved by plottiing information in table2 ?
+#NEED HELP
 
 
 #Day 8: Analyse the dataset and answer the following questions: (each person chooses one question)
