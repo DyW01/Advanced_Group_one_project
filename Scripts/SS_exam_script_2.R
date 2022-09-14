@@ -104,7 +104,7 @@ tempdata<- tidy_data
   
   # Return the blood_neut_pct column of tidy_data
   tidy_data$ blood_neut_pct 
-  
+  s
   # Create duplicate of column with new name
    tidy_data$blood_neut_pct2 <- tidy_data$blood_neut_pct  
    
