@@ -23,8 +23,8 @@ tidy_data <- myData%>%   #Assign our transformed data to object
            sep="-")%>%
   subset(select = -c(gram, year, month))%>%  #Removing excessive column
   mutate(age = as.numeric(age),       #Defining column content as numerical
-         blood_cult = as.numeric(blood_cult), 
-         blood_wbc = as.numeric(blood_wbc))%>%
+         blood_wbc = as.numeric(blood_wbc),
+         blood_cult = as.numeric(blood_cult))%>%
   mutate(across(.cols = age, ~round(.,digits = 3)), #Keeping to three decimal
          across(.cols = blood_wbc, ~round(.,digits = 1)))%>%
   mutate(race =                         #Abbreviating the content in column
@@ -63,13 +63,14 @@ summary(tidy_data)
 
 #testing summary of selected column (blood_cult, female, etc)
 tidy_data%>%
-  summary(tidy_data$blood_cult) #persons with blood_cult == 0 [NOT WORKING in pipe NOW, NB changed tidy_data pipe]
-                                #Does not let med add blood_cult == 0
+  summary(tidy_data$blood_cult, blood_cult = 0) #persons with blood_cult == 0 [NOT WORKING with argument blood_cult == 0
+
 tidy_data%>%
   summary(tidy_data$sex, sex = 0, #Only for females [From here and down it is working]
           tidy_data$age, age> 45, #Only for persons older than 45
           tidy_data$race, race = B, #Only black
-          tidy$blood_gluc, blood_gluc > 120) #Only glucose over 120
+          tidy$blood_gluc, blood_gluc > 120, #Only glucose over 120
+          tidy_data$blood_cult) #Only for females
 
 
 
@@ -102,7 +103,9 @@ Tabel2 <-
 #Does the glucose level in blood depend on sex? 
 #Assuming this task can be solved by plottiing information in table2 ?
 #NEED HELP
-
+ggplot(tidy_data,  # define data
+       aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y, 
+  geom_col(position = position_dodge())
 
 #Day 8: Analyse the dataset and answer the following questions: (each person chooses one question)
 #Is there a difference in the occurrence of the disease by sex? (DYW)
