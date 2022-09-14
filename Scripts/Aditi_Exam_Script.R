@@ -205,7 +205,7 @@ file <- merged_exam_data
 skimr::skim(file) 
 naniar::gg_miss_var(file)
 
-# Comment on the missing vairbales
+# Comment on the missing variables
 # Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
 # Stratify your data by a categorical column and report min, max, mean and sd of a numeric column for a defined set of observations - use pipe!
 #   Only for persons with `blood_cult == 0`
