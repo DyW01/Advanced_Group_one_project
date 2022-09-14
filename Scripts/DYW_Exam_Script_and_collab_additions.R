@@ -1,5 +1,5 @@
 #---------------------------The base script provided by and merged with contribution by DYW -----#
-
+#----------------------------DYW-------------------------------------------#
 #First step in making good script, is introducing code to load the packages
 #run codde below: 
 
@@ -96,7 +96,7 @@ tidy_data <-
              sex == "male" ~ "1",
              sex == "none" ~ NA_character_
            ))
-#-------------------------------------DYW-----------------------------#
+#-------------------------------------DYW and Akash-----------------------------#
 #Task is to show blood_cult as a percentage of highest possible value (11)
 #Make sure and mutate colomn blood_cult as numeric 
 
@@ -152,7 +152,8 @@ mutate_data <-
   mutate(across(.cols = age, ~round(.,digits = 3)))
 
 
-#-------------The almost completed tidyin -----#
+#-------------The almost completed tidyin --------------------------#
+#---------------------------Aditi-----------------------------------#
 #remaining tasks mutating value of neutrophiles as low or high
 #expressing age as age*abm
 #rearange
@@ -169,9 +170,10 @@ merged_exam_data <- tidy_data %>%
          everything()) %>% 
   arrange(id) %>% 
   full_join(join_data, by = "id")
-#-----------------------------------Final thought--------------------#
+#-----------------------------------Final thought-----------------------#
 
-#----- Improved script after seeing all the mutation--------------------#
+#----------Improved script after seeing all the mutation--------------------#
+#-----------------------DYW merging the given steps-------------------------# 
 #in the below pipe setup, some of the abovementioned steps are refined and combined
 #they are now assigned to object merge_exam_data
 merged_exam_data <- 
@@ -191,7 +193,6 @@ merged_exam_data <-
   arrange(id) %>% # THIS LAST CODE IS NOT WORKING
   full_join(join_data, by = "id") #CODE PART NOT WORKING
 
-#-------------------------------------------#
-#other solutions:
-#See the new script: Exam_Collab_Script_Tidy_Group_One
+#----------------------DYW addition---------------------#
+#See new refined script: Exam_Collab_Script_Tidy_Group_One
 
