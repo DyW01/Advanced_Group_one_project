@@ -36,8 +36,8 @@ head(my_data$`feature type`)
 
 myData <- my_data %>%
   pivot_wider(names_from = `feature type`,
-              values_from = feature_value,
-              )
+              values_from = feature_value)
+
 
 #check the results are true (the new columns are at the end)
 view(myData)
@@ -59,4 +59,21 @@ tidy_data <- my_data%>%
   rename(age = `1.age`)
 
 view(tidy_data)
+
+# day 6 group work- AKASH's part
+# Create a set of new columns:
+#A column showing whether blood_neut_pct is higher than 35 or not: values High/Low
+tidy_data <- my_data%>%
+  mutate(blood_neut_pct_cat2 = if_else(blood_neut_pct>35, "high","low"))
+view(tidy_data)
+#A column showing sex as 0/1 (and NA for missing, if any)
+tidy_data <- myData%>%
+  mutate(sex= recode(sex,
+                     "female"="0",
+                     "male"="1",
+                     .default = "NA"))
+view(tidy_data)
+#A numeric column showing multiplication of age and abm for each person
+
   
+
