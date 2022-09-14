@@ -90,3 +90,28 @@ tidy_data %>%
 #Use two categorical columns in your dataset to create a table (hint: ?count)
 tidy_data %>% 
   count(sex, race)
+
+
+####day 7-Akash's part#########################
+#######Does the glucose level in CSF (cerebrospinal fluid) depend on race?#############
+library(tidyverse)
+library(patchwork)
+
+#Does the glucose level in CSF (cerebrospinal fluid) depend on race?
+#grouping the data
+csf_gluc_race_grouped <- tidy_data %>%
+  group_by(race)
+#calculate sum of csf_gluc per race
+csf_gluc_race_summary <- csf_gluc_race_grouped %>%
+  summarise(sum =sum(csf_gluc, na.rm = TRUE))
+csf_gluc_race_summary
+
+#ggplot
+ggplot(csf_gluc_race_summary,
+       aes(x=as.factor(race), y=sum))+
+  geom_point()
+#adding color
+plot_sum_cfs_gluc <- ggplot(csf_gluc_race_summary,
+                            aes(x=as.factor(race), y=sum))+
+  geom_point(aes(col=age))
+plot_sum_cfs_gluc
