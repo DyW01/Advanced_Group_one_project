@@ -640,11 +640,5 @@ df_chi
 
 
 
-#  broom:: tidy( ) 
-
-
-df
-
-df
 
 ```
