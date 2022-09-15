@@ -56,8 +56,8 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
          everything()) %>%
   full_join(my_join_data,by = ("id")) #joining the join data file to the mutated my_data
 
- 
-#When everyone agrees, and if no more is to be added, we can code for savefile
-  
 view(tidy_data)
+
+#Can save file if required now
+
 
