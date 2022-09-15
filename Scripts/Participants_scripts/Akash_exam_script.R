@@ -57,6 +57,8 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   full_join(my_join_data,by = ("id")) #joining the join data file to the mutated my_data
 
 
+
+
 view(tidy_data)
 #When everyone agrees, and if no more is to be added, we can code for savefile
 
@@ -92,8 +94,10 @@ tidy_data %>%
 tidy_data %>% 
   count(sex, race)
 
+################################################################################
 
-####day 7-Akash's part#########################
+#-----------------------------Akash Day 7-----------------------------------------------#
+
 #######Does the glucose level in CSF (cerebrospinal fluid) depend on race?#############
 library(tidyverse)
 library(patchwork)
