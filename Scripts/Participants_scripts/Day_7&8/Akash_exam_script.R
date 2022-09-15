@@ -58,7 +58,6 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
 
 
 
-
 view(tidy_data)
 #When everyone agrees, and if no more is to be added, we can code for savefile
 
@@ -117,20 +116,15 @@ csf_gluc_race_summary
 
 
 
-
 #ggplot
 my_plot1 <-
   ggplot(csf_gluc_race_summary,
          aes(x=as.factor(race), y=sum))+
   geom_col(aes(fill = race), position = position_dodge())
 
-
-
-
 my_plot1
 
-
-
+#nicer plot
 
 my_plot1_nicer <- my_plot1 +
   scale_fill_brewer(type = "div",
@@ -141,3 +135,11 @@ my_plot1_nicer <- my_plot1 +
        subtitle = "",
        caption = "data source: Group 1")
 my_plot1_nicer
+
+
+#----------Using regression to find time trend in the occurrence of the disease?#
+#linear regression plot
+tidy_data%>% 
+  ggplot(aes(x = , y = )) +
+  geom_point() + 
+  geom_smooth(method = "lm")
