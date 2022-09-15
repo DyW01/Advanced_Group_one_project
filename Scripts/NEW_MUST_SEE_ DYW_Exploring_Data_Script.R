@@ -65,6 +65,9 @@ summary(tidy_data)
 tidy_data%>%
   summary(tidy_data$blood_cult, blood_cult = 0) #persons with blood_cult == 0 [NOT WORKING with argument blood_cult == 0
 
+
+#Not recommended, if applied, use only for one variable at a time
+#This is combination of base R and tidyverse
 tidy_data%>%
   summary(tidy_data$sex, sex = 0, #Only for females [From here and down it is working]
           tidy_data$age, age> 45, #Only for persons older than 45
@@ -105,7 +108,7 @@ Tabel2 <-
 #NEED HELP
 ggplot(tidy_data,  # define data
        aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y, 
-  geom_col(position = position_dodge())
+  geom_boxplot()
 
 #Day 8: Analyse the dataset and answer the following questions: (each person chooses one question)
 #Is there a difference in the occurrence of the disease by sex? (DYW)
