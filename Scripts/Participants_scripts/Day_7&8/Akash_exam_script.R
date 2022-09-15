@@ -27,7 +27,7 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   separate(date,                  #Better visualization be seperating column
            into = c("year", "month"),
            sep="-")%>%
-  subset(select = -c(gram, year, month))%>%  #Removing excessive column
+  subset(select = -c(gram, month))%>%  #Removing excessive column
   mutate(age = as.numeric(age)) %>%         #Defining column content as numerical
   mutate(across(.cols = age, ~round(.,digits = 3)))%>% #Keeping to three decimal
   mutate(race =                         #Abbreviating the content in column
@@ -138,8 +138,23 @@ my_plot1_nicer
 
 
 #----------Using regression to find time trend in the occurrence of the disease?#
-#linear regression plot
+#Catagorical outcome... makes it difficult
+#can view the relation by looking at proportion of disease occurence pr year
 tidy_data%>% 
-  ggplot(aes(x = , y = )) +
-  geom_point() + 
-  geom_smooth(method = "lm")
+  filter(!is.na(year)) %>% 
+  group_by(year) %>% 
+#  summarise(prop = mean(abm, na.rm=T)) %>% 
+  summarise(prop = sum(abm, na.rm = T)) %>% 
+  ggplot(aes(x = year, y = prop)) +
+  geom_col() 
+
+#Trying linear regression on frequency pr year
+Time_trend1 <-
+  tidy_data %>%
+  group_by(year) %>% 
+  summarise(prop = sum(abm, na.rm = T)) %>%
+  lm(prop ~ year, data = .) %>%
+  broom::tidy()
+
+
+
