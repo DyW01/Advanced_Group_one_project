@@ -54,12 +54,13 @@ tidy_data <- myData%>%   #Assign our transformed data to object
   full_join(myJoindata,by = ("id")) #joining the join data file to the mutated tidy_data
 
 #------------------------------Start exploring data--------------------------#
-#------------------- Final tasks and devition of tasks -------------------------#
+#------------------- DYW -------------------------#
 #Explore and comment on the missing variables.
 #Check data distrubtion, stratify (categorical column to report min, max, mean and sd of a numeric column and ovbservation). Use pipe
 
 #testing summary (NOT summarize) which gives the abovementioned for whole tidy_data as tibble 
 summary(tidy_data)
+skimr::skim(tidy_data)
 
 #testing summary of selected column (blood_cult, female, etc)
 tidy_data%>%

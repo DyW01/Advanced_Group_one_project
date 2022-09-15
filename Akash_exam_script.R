@@ -1,3 +1,4 @@
+
 #As a group we have devided the tasks between each other
 #through each others mistakes we have learnt
 #The road is visible in script DYW_Exam_Script
@@ -56,9 +57,9 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   full_join(my_join_data,by = ("id")) #joining the join data file to the mutated my_data
 
 
+view(tidy_data)
 #When everyone agrees, and if no more is to be added, we can code for savefile
 
-view(tidy_data)
 #Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
 tidy_data %>%                               # Summary by group sex
   split(.$sex) %>%
