@@ -91,3 +91,49 @@ tidy_data %>%
 #Use two categorical columns in your dataset to create a table (hint: ?count)
 tidy_data %>% 
   count(sex, race)
+
+
+####day 7-Akash's part#########################
+#######Does the glucose level in CSF (cerebrospinal fluid) depend on race?#############
+library(tidyverse)
+library(patchwork)
+
+#Does the glucose level in CSF (cerebrospinal fluid) depend on race?
+csf_gluc_race_grouped <- tidy_data %>%
+  filter(race == "B" | race == "W" )%>%
+  group_by(race)
+
+
+
+#calculate sum of csf_gluc per race
+csf_gluc_race_summary <- csf_gluc_race_grouped %>%
+  summarise(sum =sum(csf_gluc, na.rm = TRUE))
+csf_gluc_race_summary
+
+
+
+
+
+#ggplot
+my_plot1 <-
+  ggplot(csf_gluc_race_summary,
+         aes(x=as.factor(race), y=sum))+
+  geom_col(aes(fill = race), position = position_dodge())
+
+
+
+
+my_plot1
+
+
+
+
+my_plot1_nicer <- my_plot1 +
+  scale_fill_brewer(type = "div",
+                    name = "Glucose in CSF") + # name of the legend
+  xlab("Race") +
+  ylab("CSF Glucose") +
+  labs(title = "CSF Glucose",
+       subtitle = "",
+       caption = "data source: Group 1")
+my_plot1_nicer
