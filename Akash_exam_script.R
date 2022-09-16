@@ -8,6 +8,10 @@
 library(tidyverse)
 library(here)
 
+
+
+
+
 #Step 2 - Reading the text files, make sure directory is correct
 read_delim("exam_nontidy.txt", delim = "\t")
 read_delim("exam_joindata.txt", delim = "\t")
