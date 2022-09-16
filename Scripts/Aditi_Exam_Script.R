@@ -41,7 +41,10 @@ pacman::p_load(ggplot2, tidyverse, here, fs)
 #Load file into work environment #Separate columns using delimiter ("tab" - \t)
 #setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project/Data")
 read_delim("exam_nontidy.txt", delim = "\t")
-tidy_data <- read_delim("exam_nontidy.txt", delim = "\t")
+
+
+
+not_tidy_data <- read_delim("exam_nontidy.txt", delim = "\t")
 new_data    <- read_delim("exam_nontidy.txt", delim = "\t")
 
 #view(tidy_data) - not recommended for large datasets
@@ -215,11 +218,9 @@ tidy_data %>%
   group_by(race) %>% 
   summarise(across(where(is.numeric), mean))
 
+
             
     
-    max( na.rm = T),
-            min( na.rm = T),
-            mean( na.rm = T))
 
 
 head(tidy_data)

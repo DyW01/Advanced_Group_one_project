@@ -55,7 +55,7 @@ pacman::p_load(ggplot2, tidyverse, here, fs)
 
 ```{r Load file}
 #Load file into work environment #Separate columns using delimiter ("tab" - \t)
-#setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project/Data")
+setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project/Scripts")
 read_delim("exam_nontidy.txt", delim = "\t")
 join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
@@ -635,6 +635,41 @@ library(broom)
 df_chi <- chisq.test(df$abm , df$sex) %>% 
     tidy()
 df_chi
+
+
+
+df_year <- abm_age %>% 
+  ggplot(aes(x = year,
+             y = sum
+             )) + 
+  geom_col(aes(fill = sum))
+
+plot <- tidy_data %>%
+  filter(!is.na(year)) %>% 
+  group_by(year) %>% 
+  summarise(prop = sum(abm, na.rm = T)) %>% 
+  ggplot(aes(x = year, y = prop)) +
+  geom_col()
+plot
+
+
+
+  select(abm, year) %>% 
+  group_by(year ) %>% 
+  summarise(Sum = sum(abm, na.rm = T))
+
+#calculate sum of csf_gluc per race
+csf_gluc_race_summary <- csf_gluc_race_grouped %>%
+  summarise(Sum =sum(csf_gluc, na.rm = TRUE))
+csf_gluc_race_summary
+
+
+
+#ggplot
+my_plot1 <- 
+                   ggplot(csf_gluc_race_summary,
+       aes(x=as.factor(race), y=Sum))+
+  geom_col(aes(fill = race), position = position_dodge())
 
 
 
