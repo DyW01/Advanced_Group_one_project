@@ -6,6 +6,8 @@
 ##https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/
 
 #Alternative 1
+install.packages("pacman")
+
 packages <- c("tidyverse", "ggplot2", "here", "fs", "knitr")
 # Install and load packages
 for (p in packages) {
