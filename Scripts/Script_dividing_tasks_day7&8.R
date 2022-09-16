@@ -11,11 +11,7 @@
 
 #Day 7: Create plots that would help answer these questions: (each person chooses min.one question)
 
-#Are there any correlated measurements?
-  #Does the glucose level in blood depend on sex? (DYW)
-  #Does the glucose level in blood depend on race? (SS)
-  #Does the glucose level in CSF (cerebrospinal fluid) depend on sex? (AD +THEO)
-  #Does the glucose level in CSF (cerebrospinal fluid) depend on race? (AK)
+#Are there any correlated measurements
 
 #Day 8: Analyse the dataset and answer the following questions: (each person chooses one question)
 
