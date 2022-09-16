@@ -35,8 +35,8 @@ tidy_data <- myData%>%   #Assign our transformed data to object
            ))%>%
   mutate(sex = 
            case_when(
-             sex == "female" ~ "F",
-             sex == "male" ~ "M",
+             sex == "female" ~ "1",
+             sex == "male" ~ "0",
              sex == "none" ~ NA_character_
            ))%>%
   mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
@@ -54,17 +54,29 @@ tidy_data <- myData%>%   #Assign our transformed data to object
   full_join(myJoindata,by = ("id")) #joining the join data file to the mutated tidy_data
 
 #------------------------------Start exploring data--------------------------#
-#------------------- Final tasks and devition of tasks -------------------------#
+#------------------- DYW -------------------------#
 #Explore and comment on the missing variables.
 #Check data distrubtion, stratify (categorical column to report min, max, mean and sd of a numeric column and ovbservation). Use pipe
 
 #testing summary (NOT summarize) which gives the abovementioned for whole tidy_data as tibble 
-summary(tidy_data)
+summary(tidy_data) #R base function
+skimr::skim(tidy_data) #Tidyverse way
 
 #testing summary of selected column (blood_cult, female, etc)
 tidy_data%>%
   summary(tidy_data$blood_cult, blood_cult = 0) #persons with blood_cult == 0 [NOT WORKING with argument blood_cult == 0
+#The tidyverse way
+tidy_data %>%       #tidyverse way
+  split(.$blood_cult) %>%
+  map(summary)''
 
+#In order to make it for blood_cult == 0 use filter function (from Akash)
+tidy_data %>%         
+  filter(blood_cult==0) %>%
+  map(summary)
+
+#This is combination of base R and tidyverse
+#Not recommended, if applied, use only for one variable at a time
 tidy_data%>%
   summary(tidy_data$sex, sex = 0, #Only for females [From here and down it is working]
           tidy_data$age, age> 45, #Only for persons older than 45
@@ -75,7 +87,7 @@ tidy_data%>%
 
 
 #Use two categorical columns in your dataset to create a table (hint: ?count)
-#[Found a method without count...]
+#THis method gave me a tidy table for better overview
 Tabel1 <-
   tidy_data%>%
   drop_na(sex,   #remove missing values to make less messy table
@@ -86,6 +98,10 @@ Tabel1 <-
   pivot_wider(names_from = sex, #pivot_wider to make more sensible table
               values_from = High)%>%
   view()
+
+#Input from Akash, use count function, but then without table, results as tibble
+tidy_data %>% 
+  count(sex, blood_cult)
 
 #View as table the relation of blood_gluc grouped by sex
 Tabel2 <- 
@@ -102,14 +118,20 @@ Tabel2 <-
 
 #Does the glucose level in blood depend on sex? 
 #Assuming this task can be solved by plottiing information in table2 ?
-#NEED HELP
 ggplot(tidy_data,  # define data
        aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y, 
-  geom_col(position = position_dodge())
+  geom_boxplot()
 
 #Day 8: Analyse the dataset and answer the following questions: (each person chooses one question)
 #Is there a difference in the occurrence of the disease by sex? (DYW)
+#assign object to select column
+tidy_data_4chisq <- tidy_data%>%
+  mutate(sex = as.numeric(sex)) %>% #mutating, so that it is same type as abm (R doesn't think like a statician, so both can be numerical)
+  select(abm, sex) #select the variable
+#In this test, make sure both variables are same type. 
+chisq.test(tidy_data_4chisq$abm, tidy_data_4chisq$sex)
 
-#Look at this tomorrow
+
+
 
 
