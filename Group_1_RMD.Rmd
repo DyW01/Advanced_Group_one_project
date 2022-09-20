@@ -97,14 +97,6 @@ colnames(tidy_data)
 
 ```
 
-```{r Numeric to categorical (factor)}
-# Converts continuous numeric values into categorical (factor) data
-# This methods allows the conversion of several variables into once
-factor_cols <-  c("sex", "year", "abm", "race", "blood_neut_pct")
-tidy_data[, factor_cols] <- lapply(tidy_data[, factor_cols] , factor)
-
-```
-
 
 ```{r Data wrangling}
 
@@ -153,6 +145,14 @@ tidy_data <- tidy_data %>%   #Assign our transformed data to object
 ```
 
 
+```{r Numeric to categorical (factor)}
+# Converts continuous numeric values into categorical (factor) data
+# This methods allows the conversion of several variables into once
+factor_cols <-  c("sex", "year", "abm", "race", "blood_neut_pct")
+tidy_data[, factor_cols] <- lapply(tidy_data[, factor_cols] , factor)
+
+```
+
 
 ```{r Day 6 Tasks}
 
@@ -190,9 +190,15 @@ tidy_data %>%
     max_blood_wbc = max(blood_wbc, na.rm = T),
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
-    sd_blood_wbc = sd(blood_wbc, na.rm = T)
-  ) %>% 
-  view()
+    sd_blood_wbc = sd(blood_wbc, na.rm = T)) 
+
+
+
+count_race_sex <-
+tidy_data %>%
+  group_by(race, sex) %>%
+
+
 
 #Selected column summary (blood_cult, female, etc)
 tidy_data %>%       #tidyverse way
