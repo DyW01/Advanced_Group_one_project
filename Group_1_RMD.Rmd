@@ -68,7 +68,8 @@ library(knitr)
 
 here()
 setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project/Data")
-tidy_data <- read_delim("exam_nontidy.txt", delim = "\t")
+nontidy_data <- read_delim("exam_nontidy.txt", delim = "\t")
+tidy_data <- nontidy_data
 join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
 
@@ -116,8 +117,8 @@ tidy_data <- tidy_data%>%   #Assign our transformed data to object
          everything()) %>%
   full_join(join_data,by = ("id")) #joining the join data file to the mutated tidy_data
 
-
 #Save file if need be
+#write_csv(tidy_data, file = "exam_tidy.csv")
 ```
 
 ```{r Viewing file}
@@ -130,7 +131,6 @@ head(tidy_data)
 
 
 ```{r Day 6 Tasks}
-
 
 #Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
 tidy_data %>% 
@@ -172,7 +172,7 @@ Tabel2 <-
 ```{r Day 7 }
 
 #Does the glucose level in blood depend on sex? 
-#Assuming this task can be solved by plottiing information in table2 ?
+#Assuming this task can be solved by plotting information in table2 ?
 ggplot(tidy_data,  # define data
        aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y, 
   geom_boxplot()
@@ -182,7 +182,6 @@ ggplot(tidy_data,  # define data
 csf_gluc_race_grouped <- tidy_data %>%
   filter(race == "B" | race == "W" )%>%
   group_by(race)
-
 
 
 #calculate sum of csf_gluc per race
@@ -207,7 +206,7 @@ skimr::skim(tidy_data) #Tidyverse way
 #assign object to select column
 
 tidy_data_4chisq <- tidy_data%>%
-  mutate(sex = as.numeric(sex)) %>% #mutating, so that it is same type as abm (R doesn't think like a statician, so both can be numerical)
+  mutate(sex = as.numeric(sex)) %>% #mutating, so that it is same type as abm (R doesn't think like a statistician, so both can be numerical)
   select(abm, sex) #select the variable
 #In this test, make sure both variables are same type. 
 chisq.test(tidy_data_4chisq$abm, tidy_data_4chisq$sex)
@@ -215,7 +214,7 @@ chisq.test(tidy_data_4chisq$abm, tidy_data_4chisq$sex)
 
 #----------Using regression to find time trend in the occurrence of the disease?#
 #Catagorical outcome... makes it difficult
-#can view the relation by looking at proportion of disease occurence pr year
+#can view the relation by looking at proportion of disease occurrence pr year
 tidy_data%>% 
   filter(!is.na(year)) %>% 
   group_by(year) %>% 

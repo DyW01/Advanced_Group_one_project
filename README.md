@@ -1,13 +1,12 @@
 # Advanced Group One Project
 
-**Daanyaal:** Hello guys! This is my branch to work on tasks delegated in the coming week. #Here are my scripts and notes located, and will be transferred to merge with main branch after completion
+**Daanyaal:** Hello guys! This is my branch to work on tasks delegated in the coming week. Here are my scripts and notes located, and will be transferred to merge with main branch after completion
 
 ## **`We shall pass!`**
 
 # Files
 
 ```{r}
-
 #├── Advanced_Group_one_project.Rproj
 #├── Data
 #│   ├── codebook.html
@@ -72,6 +71,26 @@
 
 ### Day two
 
-### Day three
+### Day three and four
 
-### Day four
+```{r}
+#---------------- Final tasks and devition of tasks ------------------#
+-   #Explore and comment on the missing variables.
+-   #Check data distrubtion (everyone)
+-   #Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
+-   #Stratify your data by a categorical column and report min, max, mean and sd of a numeric column for a defined set of observations - use pipe!
+-   #Only for persons with blood_cult == 0
+-   #Only for females
+-   #Only for persons older than 45
+-   #Only for persons classified as black and blood_gluc higher than 120
+-   #Use two categorical columns in your dataset to create a table (hint: ?count)
+
+-   #Create plots that would help answer these questions: 
+    -   #Are there any correlated measurements
+  
+-   #Analyse the dataset and answer the following questions: (each person chooses one question)
+-   #Is there a difference in the occurrence of the disease by sex? (DYW)
+-   #Does the occurrence of the disease depend on age? (SS)
+-   #Is there a difference in the occurrence of the disease by race? (AD )
+-   #Is there a time trend in the occurrence of the disease? (AK +THEO)
+```
