@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 
@@ -27,6 +28,7 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 -   [`Reference - ways to load and install packages`](https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/){.uri}
 
 ```{r Install and load packages - Alternative 1}
+
 #List of packages
 #install.packages(c(tidyverse, ggplot2, here, pacman))
 library(tidyverse)
@@ -58,11 +60,13 @@ library(knitr)
 **File**
 
 -   Loading file into the environment
+-   Viewing file + summary stats + missing
 -   Data manipulation
 
 ```{r Load file}
+
 #Step 2 - Reading the text files, make sure directory is correct
-#Load file into work environment 
+#Load file into work environment
 #Separate columns using delimiter ("tab" - \t)
 #Set working directory setwd() if things are not working
 
@@ -75,39 +79,66 @@ join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
 ```
 
+```{r Viewing file}
+
+#view(tidy_data) #not advised for large data structures
+head(tidy_data)
+glimpse(tidy_data)
+
+#Provides summary statistics - missing, complete, n and sd
+#<https://www.rdocumentation.org/packages/skimr/versions/2.1.4>
+skimr::skim(tidy_data)
+
+#Graph showing frequency of missing for each variable
+naniar::gg_miss_var((tidy_data))
+
+#column names
+colnames(tidy_data)
+
+```
+
+```{r Numeric to categorical (factor)}
+# Converts continuous numeric values into categorical (factor) data
+# This methods allows the conversion of several variables into once
+factor_cols <-  c("sex", "year", "abm", "race", "blood_neut_pct")
+tidy_data[, factor_cols] <- lapply(tidy_data[, factor_cols] , factor)
+
+```
+
 
 ```{r Data wrangling}
 
 #Step 4 - The Pipe setup of multiple tidy mutations and transfomation
 #----------------Will yield to the tidiest data -------------------#
 
-tidy_data <- tidy_data%>%   #Assign our transformed data to object
+tidy_data <- tidy_data %>%   #Assign our transformed data to object
   pivot_wider(names_from = `feature type`,
-              values_from = feature_value,)%>%  #Eradicating duplicates by pivot
-  rename(age = `1.age`)%>%        #Renaming unfortunate column name
+              values_from = feature_value,) %>%  #Eradicating duplicates by pivot
+  rename(age = `1.age`) %>%        #Renaming unfortunate column name
   separate(date,                  #Better visualization be seperating column
            into = c("year", "month"),
-           sep="-")%>%
-  subset(select = -c(gram, month))%>%  #Removing excessive column
+           sep = "-") %>%
+  subset(select = -c(gram, month)) %>%  #Removing excessive column
   mutate(age = as.numeric(age)) %>%         #Defining column content as numerical
-  mutate(across(.cols = age, ~round(.,digits = 3)))%>% #Keeping to three decimal
+  mutate(across(.cols = age, ~ round(., digits = 3))) %>% #Keeping to three decimal
   mutate(race =                         #Abbreviating the content in column
            case_when(
              race == "black" ~ "B",
              race == "white" ~ "W",
              race == "none" ~ NA_character_
-           ))%>%
-  mutate(sex = 
+           )) %>%
+  mutate(sex =
            case_when(
              sex == "female" ~ "0",
              sex == "male" ~ "1",
              sex == "none" ~ NA_character_
-           ))%>%
-  mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
-  mutate(blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
-  mutate(blood_cult = round(blood_cult, digits = 0))%>% #Keeping to nearest whole number
-  mutate(blood_wbc = round(blood_wbc, digits = 1))%>%     #keeping 1 decimal
-  mutate(age_agm = age * abm )%>%   #numeric column showing multiplication of age and abm 
+           )) %>%
+  mutate(sex = as.factor(sex)) %>%         #Defining column content as categorical
+  mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High")) %>%
+  mutate(blood_cult = 100 * blood_cult / max(blood_cult, na.rm = TRUE)) %>%
+  mutate(blood_cult = round(blood_cult, digits = 0)) %>% #Keeping to nearest whole number
+  mutate(blood_wbc = round(blood_wbc, digits = 1)) %>%     #keeping 1 decimal
+  mutate(age_agm = age * abm) %>%   #numeric column showing multiplication of age and abm
   select(id,
          age,
          sex,
@@ -115,31 +146,53 @@ tidy_data <- tidy_data%>%   #Assign our transformed data to object
          starts_with("csf"),
          starts_with("blood"),
          everything()) %>%
-  full_join(join_data,by = ("id")) #joining the join data file to the mutated tidy_data
+  full_join(join_data, by = ("id")) #joining the join data file to the mutated tidy_data
 
 #Save file if need be
 #write_csv(tidy_data, file = "exam_tidy.csv")
-```
-
-```{r Viewing file}
-
-#view(tidy_data) #not advised for large data structures
-head(tidy_data)
-
 ```
 
 
 
 ```{r Day 6 Tasks}
 
-#Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
-tidy_data %>% 
-  group_by(sex) %>% 
-  summarise(max(blood_wbc, na.rm = T), min(blood_wbc, na.rm = T),mean(blood_wbc,na.rm = T),sd(blood_wbc, na.rm =T))
-tidy_data %>% 
-  group_by(race) %>% 
-  summarise(max(blood_wbc, na.rm = T), min(blood_wbc, na.rm = T),mean(blood_wbc,na.rm = T),sd(blood_wbc, na.rm =T))
+##Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
 
+# Mean/Min/Max/SD of white blood count in blood (blood_wbc) by sex and race
+blood_wbc_sex <-
+  tidy_data %>%
+  group_by(sex) %>%
+  summarise(
+    max_blood_wbc = max(blood_wbc, na.rm = T),
+    min_blood_wbc = min(blood_wbc, na.rm = T),
+    mean_blood_wbc = mean(blood_wbc, na.rm = T),
+    sd_blood_wbc = sd(blood_wbc, na.rm = T)
+  ) %>% 
+  view()
+
+blood_wbc_race <-
+  tidy_data %>%
+  group_by(race) %>%
+  summarise(
+    max_blood_wbc = max(blood_wbc, na.rm = T),
+    min_blood_wbc = min(blood_wbc, na.rm = T),
+    mean_blood_wbc = mean(blood_wbc, na.rm = T),
+    sd_blood_wbc = sd(blood_wbc, na.rm = T)
+  ) %>% 
+  view()
+
+blood_wbc_race_sex <-
+tidy_data %>%
+  filter(!is.na(race)) %>% 
+  filter(!is.na(sex)) %>% 
+  group_by(race, sex) %>%
+  summarise(
+    max_blood_wbc = max(blood_wbc, na.rm = T),
+    min_blood_wbc = min(blood_wbc, na.rm = T),
+    mean_blood_wbc = mean(blood_wbc, na.rm = T),
+    sd_blood_wbc = sd(blood_wbc, na.rm = T)
+  ) %>% 
+  view()
 
 #Selected column summary (blood_cult, female, etc)
 tidy_data %>%       #tidyverse way
@@ -147,22 +200,25 @@ tidy_data %>%       #tidyverse way
   map(summary)
 
 #In order to make it for blood_cult == 0 use filter function (from Akash)
-tidy_data %>%         
-  filter(blood_cult==0) %>%
+tidy_data %>%
+  filter(blood_cult == 0) %>%
   map(summary)
 
 #View as table the relation of blood_gluc grouped by sex
-Tabel2 <- 
-  tidy_data%>%
+Tabel2 <-
+  tidy_data %>%
   drop_na(sex,
-          blood_gluc)%>% #remove missing values to make less messy table
-  group_by(sex)%>% #Now select this as the group we check glucose for
-  summarize(Lower = min(blood_gluc), #Now we use summarize (NOT summary) to spesify what we look for
-            Average = mean(blood_gluc),
-            Upper = max(blood_gluc), 
-            Difference = max(blood_gluc) - min(blood_gluc)) %>%
-  arrange(Average)%>%
-  view() 
+          blood_gluc) %>% #remove missing values to make less messy table
+  group_by(sex) %>% #Now select this as the group we check glucose for
+  summarize(
+    Lower = min(blood_gluc),
+    #Now we use summarize (NOT summary) to spesify what we look for
+    Average = mean(blood_gluc),
+    Upper = max(blood_gluc),
+    Difference = max(blood_gluc) - min(blood_gluc)
+  ) %>%
+  arrange(Average) %>%
+  view()
 
 
 ```
@@ -171,22 +227,22 @@ Tabel2 <-
 
 ```{r Day 7 }
 
-#Does the glucose level in blood depend on sex? 
+#Does the glucose level in blood depend on sex?
 #Assuming this task can be solved by plotting information in table2 ?
 ggplot(tidy_data,  # define data
-       aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y, 
+       aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y,
   geom_boxplot()
 
 
 #Does the glucose level in CSF (cerebrospinal fluid) depend on race?
 csf_gluc_race_grouped <- tidy_data %>%
-  filter(race == "B" | race == "W" )%>%
+  filter(race == "B" | race == "W") %>%
   group_by(race)
 
 
 #calculate sum of csf_gluc per race
 csf_gluc_race_summary <- csf_gluc_race_grouped %>%
-  summarise(sum =sum(csf_gluc, na.rm = TRUE))
+  summarise(sum = sum(csf_gluc, na.rm = TRUE))
 csf_gluc_race_summary
 
 
@@ -205,31 +261,33 @@ skimr::skim(tidy_data) #Tidyverse way
 #Is there a difference in the occurrence of the disease by sex? (DYW)
 #assign object to select column
 
-tidy_data_4chisq <- tidy_data%>%
+tidy_data_4chisq <- tidy_data %>%
   mutate(sex = as.numeric(sex)) %>% #mutating, so that it is same type as abm (R doesn't think like a statistician, so both can be numerical)
   select(abm, sex) #select the variable
-#In this test, make sure both variables are same type. 
+#In this test, make sure both variables are same type.
 chisq.test(tidy_data_4chisq$abm, tidy_data_4chisq$sex)
 
 
 #----------Using regression to find time trend in the occurrence of the disease?#
 #Catagorical outcome... makes it difficult
 #can view the relation by looking at proportion of disease occurrence pr year
-tidy_data%>% 
-  filter(!is.na(year)) %>% 
-  group_by(year) %>% 
-  #  summarise(prop = mean(abm, na.rm=T)) %>% 
-  summarise(prop = sum(abm, na.rm = T)) %>% 
+tidy_data %>%
+  filter(!is.na(year)) %>%
+  group_by(year) %>%
+  #  summarise(prop = mean(abm, na.rm=T)) %>%
+  summarise(prop = sum(abm, na.rm = T)) %>%
   ggplot(aes(x = year, y = prop)) +
-  geom_col() 
+  geom_col()
 
 #Trying linear regression on frequency pr year
 Time_trend1 <-
   tidy_data %>%
-  group_by(year) %>% 
+  group_by(year) %>%
   summarise(prop = sum(abm, na.rm = T)) %>%
   lm(prop ~ year, data = .) %>%
   broom::tidy()
+
+
 ```
 
 
