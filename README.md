@@ -10,6 +10,17 @@ Hello guys!
 #We shall pass!
 
 
+-RMED
+|--README.txt
+|--day_01
+|----lecture_one_v1.R
+|----lecture
+|----Input.txt
+|----cleaned_data.txt
+|--Scripts
+|----reading_data.R
+|----analysis.R
+
 #Following description of data:
 #------ Description of dataset ----------#
 #Notes from codebook:
