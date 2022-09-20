@@ -1,77 +1,92 @@
-# Advanced_Group_one_project
-Advanced_group_1_project
+# Advanced Group One Project
 
-Hello guys! 
+**Daanyaal:** Hello guys! This is my branch to work on tasks delegated in the coming week. #Here are my scripts and notes located, and will be transferred to merge with main branch after completion
 
-#This is my branch to work on tasks deligated in the coming week. 
-#Here are my scripts and notes located, and will be tranferred to merge with main branch after completion
+## **`We shall pass!`**
 
-
-#We shall pass!
+# Files
 
 
--RMED
-|--README.txt
-|--day_01
-|----lecture_one_v1.R
-|----lecture
-|----Input.txt
-|----cleaned_data.txt
-|--Scripts
-|----reading_data.R
-|----analysis.R
+├── Advanced_Group_one_project.Rproj
+├── Data
+│   ├── codebook.html
+│   ├── exam_joindata.txt
+│   └── exam_nontidy.txt
+├── Group_1_RMD.html
+├── Group_1_RMD.Rmd
+├── README.md
+└── Scripts
+    ├── Exam_Collab_Script_Tidy_Group_One.R
+    ├── Participants_scripts
+    │   ├── Day_1_to_4_scripts
+    │   │   ├── Aditi_R_markdown.Rmd
+    │   │   ├── Akash_script.R
+    │   │   └── First_collab_practice_script.R
+    │   ├── Day_5_to_6_scripts
+    │   │   ├── Akash_script_day 7.R
+    │   │   ├── Day_5_exploring_data.R
+    │   │   └── SS_exam_script.R
+    │   └── Day_7&8
+    │       ├── Aditi_Exam_Script.R
+    │       ├── Akash_exam_script.R
+    │       ├── Day_7_Collab_Script_additions.R
+    │       ├── DYW_Exam_Task_DAY7&8_Script.R
+    │       └── SS_exam_script_2.R
+    ├── Rmarkdown_Exam_group_One_ Aditi_et_al.Rmd
+    └── Script_dividing_tasks_day7&8.R
 
-#Following description of data:
-#------ Description of dataset ----------#
-#Notes from codebook:
+# Exam
 
-#We have two cases of meningites:
-  #viral (abm = 0) vs. bacterial (abm = 1) cases. 
-  #Total of 581 patients, and missing data accordingly from n amount of patients
-  #There are samples from spinal fluid, and blood
-  #Cases from year 1968 to 1980
-  #Population race and sex are defined
+-   We have two cases of acute meningitis:
 
-#My Day_One task is to identify duplicates, and merge files from everyone
+    -   Viral (abm = 0) vs. bacterial (abm = 1) cases.
 
-# -----README_EXAM-----#
-#This is our readme file for the exam. Our tasks are the folowing: 
-  #Day_one: Read and tidy
-    # Deligate tidying task among the group
-  #Day_two: Tidy, adjust and explore
-  #Day_three:Create plots
-  #Day_four: Analyze
-#Finally we will write a report and submit
+    -   Total of 581 patients, and missing data accordingly from n amount of patients
 
+    -   There are samples from spinal fluid, and blood #Cases from year 1968 to 1980 #Population race and sex are defined
 
-#------------------------ DAY_one -------------------------------------#
+-   Our tasks are the following:
 
-#For orderly working progress, following steps are required:
-  #Delete your previous branch, and make new branch with following name:
-    #name_of_cand_Exam_Branch
-  #In your branch, create your script, with following name:
-    #name_of_Cand_Exam_Script
+    -   #Day_one: Read and tidy \# Delegate tidying task among the group
 
-#We will merge the scripts to main evantually. 
+    -   #Day_two: Tidy, adjust and explore
 
-#Before starting the task, do the following: 
-  #In your branch_script, load both "tidyverse" and "here" packages
-  #then read file with read_delim () function.
-    #within parantheses add filename
-  #NB! don't use the "dot" function (read.file()) | this is not   
-  #tidyverse function
+    -   #Day_three:Create plots
 
-#--- Day_One_TIDY taks -----#
+    -   #Day_four: Analyze
 
-#The candidates will do the following: 
-  #SS seperate feature into sex and race
-  #Akash rewriting age colum
-  #Theo renaming date into date of birth
-  #DYW Removing duplicated row, and merge files
-  #Aditi, read through readme and prepare
-    #exempted because of attendance in another appointemnt
+    -   #Finally we will write a report and submit
 
+### Day one
 
+-   #For orderly working progress, following steps are required:
+    -   #Delete your previous branch, and make new branch with following name:
+        -   #name_of_cand_Exam_Branch
 
-#------------------------ DAY_two -------------------------------------#
-#
+        -   #In your branch, create your script, with following name: #name_of_Cand_Exam_Script
+    -   #We will merge the scripts to main eventually.
+-   #Before starting the task, do the following:
+    -   #In your branch_script, load both "tidyverse" and "here" packages
+
+    -   #then read file with read_delim () function.
+
+    -   #within parentheses add file name
+
+    -   #NB! don't use the "dot" function (read.file()) \| this is not\
+        #tidyverse function
+-   #The candidates will do the following:
+    -   #SS seperate feature into sex and race
+
+    -   #Akash rewriting age colum
+
+    -   #Theo renaming date into date of birth
+
+    -   #DYW Removing duplicated row, and merge files
+
+    -   #Aditi, read through readme and prepare #exempted because of attendance in another appointment
+
+### Day two
+
+### Day three
+
+### Day four
