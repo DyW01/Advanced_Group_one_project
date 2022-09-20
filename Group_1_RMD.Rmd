@@ -27,6 +27,7 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 -   [`Reference - ways to load and install packages`](https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/){.uri}
 
+
 ```{r Install and load packages - Alternative 1}
 
 #List of packages
@@ -42,12 +43,12 @@ library(knitr)
 
 
 
-**Directory and Environment**
-
--   `Ctrl+Shift+A` to reformat code in the code chunks/R script file
+** Directory and Environment **
+  
+  -`Ctrl+Shift+A` to reformat code in the code chunks / R script file
 -   `Ctrl+Shift+M` for `%>%`
 
-```{r }
+```{r}
 #getwd()  - current directory
 #here()   - current directory
 #setwd()  - change working directory
@@ -57,13 +58,13 @@ library(knitr)
 #dir_tree(here()) - draws a tree of the current directory
 ```
 
-**File**
-
--   Loading file into the environment
+** File **
+  
+  -Loading file into the environment
 -   Viewing file + summary stats + missing
 -   Data manipulation
 
-```{r Load file, include=FALSE}
+```{r Load file, include = FALSE}
 
 #Step 2 - Reading the text files, make sure directory is correct
 #Load file into work environment
@@ -79,7 +80,7 @@ join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
 ```
 
-```{r Viewing file, }
+```{r Viewing file,}
 
 #view(tidy_data) #not advised for large data structures
 head(tidy_data)
@@ -107,7 +108,7 @@ colnames(tidy_data)
 
 tidy_data <- tidy_data %>%   #Assign our transformed data to object
   pivot_wider(names_from = `feature type`,
-              values_from = feature_value,) %>%  #Eradicating duplicates by pivot
+              values_from = feature_value, ) %>%  #Eradicating duplicates by pivot
   rename(age = `1.age`) %>%        #Renaming unfortunate column name
   separate(date,                  #Better visualization be separating column
            into = c("year", "month"),
@@ -133,7 +134,7 @@ tidy_data <- tidy_data %>%   #Assign our transformed data to object
   mutate(blood_wbc = round(blood_wbc, digits = 1)) %>%     #keeping 1 decimal
   mutate(age_agm = age * abm) %>%   #numeric column showing multiplication of age and abm
   subset(select = -c(gram, month)) %>%  #Removing excessive column
-  select(id, 
+  select(id,
          age,
          sex,
          race,
@@ -141,7 +142,7 @@ tidy_data <- tidy_data %>%   #Assign our transformed data to object
          starts_with("blood"),
          everything()) %>% #Another way to keep only the columns you want
   full_join(join_data, by = ("id")) %>% #joining the join data file to the mutated tidy_data
-  arrange(id) #ordering ID in ascending 
+  arrange(id) #ordering ID in ascending
 
 
 # Converts continuous "numeric" into categorical "factor" data
@@ -164,7 +165,7 @@ tidy_data[, factor_cols] <-
 
 ```{r Missing data after tidying the data}
 
-skimr::skim(tidy_data) #Check the complete rate - all rows have an id 
+skimr::skim(tidy_data) #Check the complete rate - all rows have an id
 naniar::gg_miss_var((tidy_data)) # Graphing the missing data
 #The variables "blood_cult" and "csf_cult" have the most missing data (give information on growth of bacteria in the blood and CSF respectively)
 
@@ -173,15 +174,22 @@ naniar::gg_miss_var((tidy_data)) # Graphing the missing data
 
 ```{r Day 6 Tasks I}
 
-#frequency/count for each subgroup 
+#frequency/count for each subgroup
 tidy_data %>%
   group_by(race, sex) %>%
-  count() %>% 
+  count() %>%
   rename(total = n)
 
 #Table
-table(tidy_data$race, tidy_data$sex) %>% 
+table(tidy_data$race, tidy_data$sex) %>%
   head()
+
+
+#Explore and comment on the missing variables.
+naniar::gg_miss_var((tidy_data))
+summary(tidy_data) #R base function
+skimr::skim(tidy_data) #Tidyverse way
+
 
 
 ```
@@ -191,7 +199,7 @@ table(tidy_data$race, tidy_data$sex) %>%
 # Mean/Min/Max/SD of white blood count in blood (blood_wbc) by sex and race
 
 #blood_wbc_sex <-
-  tidy_data %>%
+tidy_data %>%
   group_by(sex) %>%
   summarise(
     max_blood_wbc = max(blood_wbc, na.rm = T),
@@ -201,34 +209,36 @@ table(tidy_data$race, tidy_data$sex) %>%
   )
 
 #blood_wbc_race <-
-  tidy_data %>%
+tidy_data %>%
   group_by(race) %>%
   summarise(
     max_blood_wbc = max(blood_wbc, na.rm = T),
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
-  ) 
+  )
 
 #blood_wbc_race_sex <-
 tidy_data %>%
-  filter(!is.na(race) & !is.na(sex)) %>% #removing cases with missing data for gender and sex
+  filter(!is.na(race) &
+           !is.na(sex)) %>% #removing cases with missing data for gender and sex
   group_by(race, sex) %>%
   summarise(
     max_blood_wbc = max(blood_wbc, na.rm = T),
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T),
-    .groups = 'drop') # Adding this to remove the warning : https://stackoverflow.com/questions/62140483/how-to-interpret-dplyr-message-summarise-regrouping-output-by-x-override
+    .groups = 'drop'
+  ) # Adding this to remove the warning : https://stackoverflow.com/questions/62140483/how-to-interpret-dplyr-message-summarise-regrouping-output-by-x-override
 ```
 
 ```{r Day 6 Tasks III}
 
 # Mean/Min/Max/SD of csf_prot (Protein in CSF) for people with :
 
-#   blood_cult == 0 
+#   blood_cult == 0
 tidy_data %>%
-  filter(blood_cult == 0) %>% 
+  filter(blood_cult == 0) %>%
   summarise(
     max_csf_prot = max(csf_prot, na.rm = T),
     min_csf_prot = min(csf_prot, na.rm = T),
@@ -238,7 +248,7 @@ tidy_data %>%
 
 #   females
 tidy_data %>%
-  filter(sex == 0) %>% 
+  filter(sex == 0) %>%
   summarise(
     max_csf_prot = max(csf_prot, na.rm = T),
     min_csf_prot = min(csf_prot, na.rm = T),
@@ -251,7 +261,7 @@ tidy_data %>%
 
 #   race black and blood_gluc higher than 120
 tidy_data %>%
-  filter(blood_gluc >= 120 & race == "B") %>% 
+  filter(blood_gluc >= 120 & race == "B") %>%
   summarise(
     max_csf_prot = max(csf_prot, na.rm = T),
     min_csf_prot = min(csf_prot, na.rm = T),
@@ -263,20 +273,20 @@ tidy_data %>%
 #   persons older than 45
 #Since there is repetition, we decided to create a function to fo this job for us.
 data_summary <- function(y) {
-    max_ <- max(y, na.rm = T)
-    min_ <- min(y, na.rm = T)
-    mean_ <- mean(y, na.rm = T)
-    sd_ <- sd(y, na.rm = T)
-    data_ <- c(max_, min_, mean_, sd_)
-    col_ <- c("Maximum", "Minimum", "Mean","SD")
-    df_ <- tibble(col_, data_)
-    return(df_)
+  max_ <- max(y, na.rm = T)
+  min_ <- min(y, na.rm = T)
+  mean_ <- mean(y, na.rm = T)
+  sd_ <- sd(y, na.rm = T)
+  data_ <- c(max_, min_, mean_, sd_)
+  col_ <- c("Maximum", "Minimum", "Mean", "SD")
+  df_ <- tibble(col_, data_)
+  return(df_)
 }
 
-#Although smart, it doesn't seem to work with the pipes. 
+#Although smart, it doesn't seem to work with the pipes.
 #Therefore, we created a new data set with the specific filters and ran that as a argument of the function.
 tidy_data_age_45 <- tidy_data %>%
-  filter(age >= 45) 
+  filter(age >= 45)
 data_summary(tidy_data_age_45$csf_prot)
 
 ```
@@ -284,104 +294,246 @@ data_summary(tidy_data_age_45$csf_prot)
 
 
 ```{r Day 7 Tasks I}
+#    - Are there any correlated measurements?
+
+# We decided to plot a correlation matrix
+
+#https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html
+
+df <- select(tidy_data,-("id")) #removing ID
+df <-
+  select(df,-("blood_cult")) #removing "blood_cult" since it has a lot of missing values
+df <- df[sapply(df, is.numeric)] #making all variables numeric
+df <-
+  df[complete.cases(df), ] #ensuring only those rows with complete information in all columns are included
+
+cor(df, method = "pearson" , use = "complete.obs") #A correlation matrix for all variables
+naniar::gg_miss_var((df)) # Graphing the missing data - none missing
+
+#install.packages("corrplot")
+library(corrplot) #can help graphically visualize the correlation plots
+corrplot(
+  cor(df),
+  method = "shade",
+  shade.col = NA,
+  tl.col = "black",
+  tl.srt = 45
+)
+
+#only those with p-value < 0.05
+testRes = cor.mtest(df, conf.level = 0.95)
+corrplot(
+  cor(df),
+  p.mat = testRes$p,
+  method = 'circle',
+  type = 'lower',
+  insig = 'blank',
+  addCoef.col = 'black',
+  number.cex = 0.8,
+  order = 'AOE',
+  diag = FALSE
+)
+
+```
 
 
-#View as table the relation of blood_gluc grouped by sex
-#blood_gluc_summary <-
-  tidy_data %>%
+```{r Day 7 Task II}
+#    - Does the glucose level in blood depend on sex?
+
+tidy_data %>%
   drop_na(sex,
           blood_gluc) %>% #remove missing values to make less messy table
   group_by(sex) %>% #Now select this as the group we check glucose for
   summarize(
-    Lower = min(blood_gluc),
-    #Now we use summarize (NOT summary) to spesify what we look for
-    Average = mean(blood_gluc),
-    Upper = max(blood_gluc),
-    Difference = max(blood_gluc) - min(blood_gluc)
+    min_blood_gluc = min(blood_gluc),
+    mean_blood_gluc = mean(blood_gluc),
+    max_blood_gluc = max(blood_gluc),
+    sd_blood_gluc = sd(blood_gluc)
   ) %>%
-  arrange(Average)
+  arrange()
+#The average blood glucose level in women is higher than in men
 
 
-#Selected column summary (blood_cult, female, etc)
-tidy_data %>%       #tidyverse way
-  split(.$blood_cult) %>%
-  map(summary) %>% 
-  view()
-
-#In order to make it for blood_cult == 0 use filter function (from Akash)
+#Graph - Boxplot
 tidy_data %>%
-  filter(blood_cult == 0) %>%
-  map(summary)
+  drop_na(sex) %>% #removed missing "sex"
+  ggplot(aes(x = as.factor(sex), #to make "sex" categorical
+             y = blood_gluc)) +
+  geom_boxplot() +
+  scale_x_discrete(name = "Gender", labels = c("Female", "Male")) +
+  scale_y_continuous(name = "Blood Glucose") +
+  theme_minimal() +
+  labs(title = "Blood glucose by gender")
+
+
 ```
 
 
 
-```{r Day 7 }
+```{r Day 7 Task III}
+#    - Does the glucose level in blood depend on race?
 
-#Does the glucose level in blood depend on sex?
-#Assuming this task can be solved by plotting information in table2 ?
-ggplot(tidy_data,  # define data
-       aes(x = as.factor(sex), y = blood_gluc)) +  # define which columns are x and y,
-  geom_boxplot()
+tidy_data %>%
+  drop_na(race,
+          blood_gluc) %>%
+  group_by(race) %>%
+  summarize(
+    min_blood_gluc = min(blood_gluc),
+    mean_blood_gluc = mean(blood_gluc),
+    max_blood_gluc = max(blood_gluc),
+    sd_blood_gluc = sd(blood_gluc)
+  ) %>%
+  arrange()
+#The average blood glucose level among blacks and whites is similar
+
+
+#Graph - Boxplot
+tidy_data %>%
+  drop_na(race) %>%
+  ggplot(aes(x = as.factor(race),
+             y = blood_gluc)) +
+  geom_boxplot() +
+  scale_x_discrete(name = "Race", labels = c("Black", "White")) +
+  scale_y_continuous(name = "Blood Glucose") +
+  theme_minimal() +
+  labs(title = "Blood glucose by race")
+
+
+```
+
+
+```{r Day 7 Task IV}
+#    - Does the glucose level in CSF (cerebrospinal fluid) depend on sex?
+# -Does the glucose level in CSF (cerebrospinal fluid) depend on race ?
+
+Gluc_CSF <- tidy_data %>%
+  drop_na(race, sex) %>%
+  ggplot(aes(x = as.factor(sex),
+             y = csf_gluc, fill = sex)) +
+  geom_boxplot() +
+  scale_x_discrete(name = "", labels = c("Female", "Male")) +
+  scale_y_discrete(name = "Glucose in CSF") +
+  theme(legend.position = "none")
+
+#Graphing the difference between race and gender on CSF glucose using FACET!
+#https://r-graph-gallery.com/264-control-ggplot2-boxplot-colors.html
+new_labels <- c("B" = "Black", "W" = "White")
+Gluc_CSF + facet_grid(cols = vars(race),
+                      labeller = labeller(race = new_labels)) +
+  labs(title = "CSF glucose by race")
+
 
 
 #Does the glucose level in CSF (cerebrospinal fluid) depend on race?
 csf_gluc_race_grouped <- tidy_data %>%
   filter(race == "B" | race == "W") %>%
   group_by(race)
-
-
 #calculate sum of csf_gluc per race
 csf_gluc_race_summary <- csf_gluc_race_grouped %>%
   summarise(sum = sum(csf_gluc, na.rm = TRUE))
 csf_gluc_race_summary
 
-
-#Explore your data.
-#Explore and comment on the missing variables.
-naniar::gg_miss_var((tidy_data))
-summary(tidy_data) #R base function
-skimr::skim(tidy_data) #Tidyverse way
-
-
 ```
 
-```{r Day 8}
 
-#Analyse the dataset and answer the following questions: (each person chooses one question)
-#Is there a difference in the occurrence of the disease by sex? (DYW)
-#assign object to select column
 
+```{r Day 8 Task I}
+
+#   - Is there a difference in the occurrence of the disease by sex?
 tidy_data_4chisq <- tidy_data %>%
-  mutate(sex = as.numeric(sex)) %>% #mutating, so that it is same type as abm (R doesn't think like a statistician, so both can be numerical)
+  mutate(sex = as.numeric(sex)) %>%
+  #mutating, so that it is same type as abm
+  #(R doesn't think like a statistician, so both can be numerical)
   select(abm, sex) #select the variable
-#In this test, make sure both variables are same type.
+#In this test, make sure both variables are same class/type
 chisq.test(tidy_data_4chisq$abm, tidy_data_4chisq$sex)
 
 
-#----------Using regression to find time trend in the occurrence of the disease?#
-#Catagorical outcome... makes it difficult
-#can view the relation by looking at proportion of disease occurrence pr year
-tidy_data %>%
-  filter(!is.na(year)) %>%
-  group_by(year) %>%
-  #  summarise(prop = mean(abm, na.rm=T)) %>%
-  summarise(prop = sum(abm, na.rm = T)) %>%
-  ggplot(aes(x = year, y = prop)) +
-  geom_col()
-
-#Trying linear regression on frequency pr year
-Time_trend1 <-
-  tidy_data %>%
-  group_by(year) %>%
-  summarise(prop = sum(abm, na.rm = T)) %>%
-  lm(prop ~ year, data = .) %>%
-  broom::tidy()
 
 
 ```
 
 
+```{r Day 8 Task II}
+#   - Is there a time trend in the occurrence of the disease?
+
+tidy_data %>% 
+group_by(year) %>%
+  mutate(abm = as.numeric(abm)) %>%
+  filter(!is.na(year)) %>%
+  #mutate abm into numeric since a factor cannot be summarized
+  #doesn't understand statistics
+  summarise(sum_abm = sum(abm, na.rm = T)) %>%
+  #  table() #For drawing a cross-tab
+  ggplot(aes(x = as.factor(year),
+             y = sum_abm)) +
+  geom_col() +
+  scale_x_discrete(name = "Year") +
+  scale_y_continuous(name = "No. of patients with acute meningitis cases") +
+  theme(legend.position = "none") +
+  labs(title = "Number of meningitis over time")
+
+
+#Trying linear regression on frequency per year
+time_trend <-
+  tidy_data %>%
+  group_by(year) %>%
+  mutate(abm = as.numeric(abm)) %>%
+  mutate(year = as.numeric(year)) %>%
+  
+  filter(!is.na(year)) %>%
+  summarise(sum_abm = sum(abm, na.rm = T)) %>%
+  lm(sum_abm ~ year, data = .) %>%
+  broom::tidy()
+head(time_trend)
+
+```
 
 
 
+```{r Day 8 Task III}
+
+#    - Does the occurrence of the disease depend on age?
+#    - Is there a difference in the occurrence of the disease by race?
+
+#https://www.statology.org/r-create-categorical-variable-from-continuous/
+
+tidy_data <- tidy_data %>% 
+  mutate(age = as.numeric(age)) 
+
+tidy_data$age_cat <- cut(
+  tidy_data$age,
+  breaks = c(5, 10, 15, 20,
+             25, 30, 35, 40,
+             45, 50, 55, 60,
+             65, 70, 75, 80, 85),
+  labels = c(
+    "5",     "10",
+    "15",    "20",
+    "25",    "30",
+    "35",    "40",
+    "45",    "50",
+    "55",    "60",
+    "65",    "70",
+    "75",    "80"
+  )
+)
+
+tidy_data %>%
+  mutate(abm = as.numeric(abm)) %>%
+  group_by(age_cat, race) %>%
+  filter(!is.na(age_cat) & !is.na(race)) %>%
+  summarise(sum_abm = sum(abm, na.rm = T)) %>%
+  ggplot(aes(
+    x = as.factor(age_cat),
+    y = sum_abm,
+    fill = race
+  )) +
+  geom_col() +
+  scale_x_discrete(name = "Age groups") +
+  scale_y_continuous(name = "No. of patients with acute meningitis cases") +
+  theme(legend.position = "none") +
+  labs(title = "Number of meningitis by age groups") + 
+  theme_light()
+
+```
