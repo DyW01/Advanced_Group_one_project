@@ -63,7 +63,7 @@ library(knitr)
 -   Viewing file + summary stats + missing
 -   Data manipulation
 
-```{r Load file}
+```{r Load file, include=FALSE}
 
 #Step 2 - Reading the text files, make sure directory is correct
 #Load file into work environment
@@ -79,7 +79,7 @@ join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
 ```
 
-```{r Viewing file}
+```{r Viewing file, }
 
 #view(tidy_data) #not advised for large data structures
 head(tidy_data)
@@ -98,21 +98,22 @@ colnames(tidy_data)
 ```
 
 
-```{r Data wrangling}
+```{r Data wrangling and tidying}
 
-#Step 4 - The Pipe setup of multiple tidy mutations and transfomation
+#Day 6 Oppgave
+#The Pipe setup of multiple tidy mutations and transformation
 #----------------Will yield to the tidiest data -------------------#
+
 
 tidy_data <- tidy_data %>%   #Assign our transformed data to object
   pivot_wider(names_from = `feature type`,
               values_from = feature_value,) %>%  #Eradicating duplicates by pivot
   rename(age = `1.age`) %>%        #Renaming unfortunate column name
-  separate(date,                  #Better visualization be seperating column
+  separate(date,                  #Better visualization be separating column
            into = c("year", "month"),
            sep = "-") %>%
-  subset(select = -c(gram, month)) %>%  #Removing excessive column
   mutate(age = as.numeric(age)) %>%         #Defining column content as numerical
-  mutate(across(.cols = age, ~ round(., digits = 3))) %>% #Keeping to three decimal
+  mutate(across(.cols = age, ~ round(., digits = 3))) %>% #Keeping to three decimal across all columns
   mutate(race =                         #Abbreviating the content in column
            case_when(
              race == "black" ~ "B",
@@ -125,41 +126,71 @@ tidy_data <- tidy_data %>%   #Assign our transformed data to object
              sex == "male" ~ "1",
              sex == "none" ~ NA_character_
            )) %>%
-  mutate(sex = as.factor(sex)) %>%         #Defining column content as categorical
+  mutate(sex = as.factor(sex)) %>%         #Defining column as categorical
   mutate(blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High")) %>%
   mutate(blood_cult = 100 * blood_cult / max(blood_cult, na.rm = TRUE)) %>%
   mutate(blood_cult = round(blood_cult, digits = 0)) %>% #Keeping to nearest whole number
   mutate(blood_wbc = round(blood_wbc, digits = 1)) %>%     #keeping 1 decimal
   mutate(age_agm = age * abm) %>%   #numeric column showing multiplication of age and abm
-  select(id,
+  subset(select = -c(gram, month)) %>%  #Removing excessive column
+  select(id, 
          age,
          sex,
          race,
          starts_with("csf"),
          starts_with("blood"),
-         everything()) %>%
-  full_join(join_data, by = ("id")) #joining the join data file to the mutated tidy_data
-
-#Save file if need be
-#write_csv(tidy_data, file = "exam_tidy.csv")
-```
+         everything()) %>% #Another way to keep only the columns you want
+  full_join(join_data, by = ("id")) %>% #joining the join data file to the mutated tidy_data
+  arrange(id) #ordering ID in ascending 
 
 
-```{r Numeric to categorical (factor)}
-# Converts continuous numeric values into categorical (factor) data
+# Converts continuous "numeric" into categorical "factor" data
 # This methods allows the conversion of several variables into once
 factor_cols <-  c("sex", "year", "abm", "race", "blood_neut_pct")
-tidy_data[, factor_cols] <- lapply(tidy_data[, factor_cols] , factor)
+tidy_data[, factor_cols] <-
+  lapply(tidy_data[, factor_cols] , factor)
+
 
 ```
 
 
-```{r Day 6 Tasks}
+```{r Saving file}
 
-##Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
+#Check path/ directory before saving
+#write_csv(tidy_data, file = "exam_tidy.csv")
+
+```
+
+
+```{r Missing data after tidying the data}
+
+skimr::skim(tidy_data) #Check the complete rate - all rows have an id 
+naniar::gg_miss_var((tidy_data)) # Graphing the missing data
+#The variables "blood_cult" and "csf_cult" have the most missing data (give information on growth of bacteria in the blood and CSF respectively)
+
+```
+
+
+```{r Day 6 Tasks I}
+
+#frequency/count for each subgroup 
+tidy_data %>%
+  group_by(race, sex) %>%
+  count() %>% 
+  rename(total = n)
+
+#Table
+table(tidy_data$race, tidy_data$sex) %>% 
+  head()
+
+
+```
+
+```{r Day 6 Tasks II, warning = FALSE}
 
 # Mean/Min/Max/SD of white blood count in blood (blood_wbc) by sex and race
-blood_wbc_sex <-
+
+#blood_wbc_sex <-
   tidy_data %>%
   group_by(sex) %>%
   summarise(
@@ -167,10 +198,9 @@ blood_wbc_sex <-
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
-  ) %>% 
-  view()
+  )
 
-blood_wbc_race <-
+#blood_wbc_race <-
   tidy_data %>%
   group_by(race) %>%
   summarise(
@@ -178,40 +208,86 @@ blood_wbc_race <-
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
-  ) %>% 
-  view()
+  ) 
 
-blood_wbc_race_sex <-
+#blood_wbc_race_sex <-
 tidy_data %>%
-  filter(!is.na(race)) %>% 
-  filter(!is.na(sex)) %>% 
+  filter(!is.na(race) & !is.na(sex)) %>% #removing cases with missing data for gender and sex
   group_by(race, sex) %>%
   summarise(
     max_blood_wbc = max(blood_wbc, na.rm = T),
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
-    sd_blood_wbc = sd(blood_wbc, na.rm = T)) 
+    sd_blood_wbc = sd(blood_wbc, na.rm = T),
+    .groups = 'drop') # Adding this to remove the warning : https://stackoverflow.com/questions/62140483/how-to-interpret-dplyr-message-summarise-regrouping-output-by-x-override
+```
 
+```{r Day 6 Tasks III}
 
+# Mean/Min/Max/SD of csf_prot (Protein in CSF) for people with :
 
-count_race_sex <-
+#   blood_cult == 0 
 tidy_data %>%
-  group_by(race, sex) %>%
+  filter(blood_cult == 0) %>% 
+  summarise(
+    max_csf_prot = max(csf_prot, na.rm = T),
+    min_csf_prot = min(csf_prot, na.rm = T),
+    mean_csf_prot = mean(csf_prot, na.rm = T),
+    sd_csf_prot = sd(csf_prot, na.rm = T)
+  )
 
-
-
-#Selected column summary (blood_cult, female, etc)
-tidy_data %>%       #tidyverse way
-  split(.$blood_cult) %>%
-  map(summary)
-
-#In order to make it for blood_cult == 0 use filter function (from Akash)
+#   females
 tidy_data %>%
-  filter(blood_cult == 0) %>%
-  map(summary)
+  filter(sex == 0) %>% 
+  summarise(
+    max_csf_prot = max(csf_prot, na.rm = T),
+    min_csf_prot = min(csf_prot, na.rm = T),
+    mean_csf_prot = mean(csf_prot, na.rm = T),
+    sd_csf_prot = sd(csf_prot, na.rm = T)
+  )
+
+
+
+
+#   race black and blood_gluc higher than 120
+tidy_data %>%
+  filter(blood_gluc >= 120 & race == "B") %>% 
+  summarise(
+    max_csf_prot = max(csf_prot, na.rm = T),
+    min_csf_prot = min(csf_prot, na.rm = T),
+    mean_csf_prot = mean(csf_prot, na.rm = T),
+    sd_csf_prot = sd(csf_prot, na.rm = T)
+  )
+
+
+#   persons older than 45
+#Since there is repetition, we decided to create a function to fo this job for us.
+data_summary <- function(y) {
+    max_ <- max(y, na.rm = T)
+    min_ <- min(y, na.rm = T)
+    mean_ <- mean(y, na.rm = T)
+    sd_ <- sd(y, na.rm = T)
+    data_ <- c(max_, min_, mean_, sd_)
+    col_ <- c("Maximum", "Minimum", "Mean","SD")
+    df_ <- tibble(col_, data_)
+    return(df_)
+}
+
+#Although smart, it doesn't seem to work with the pipes. 
+#Therefore, we created a new data set with the specific filters and ran that as a argument of the function.
+tidy_data_age_45 <- tidy_data %>%
+  filter(age >= 45) 
+data_summary(tidy_data_age_45$csf_prot)
+
+```
+
+
+
+```{r Day 6 Tasks IV}
+
 
 #View as table the relation of blood_gluc grouped by sex
-Tabel2 <-
+#blood_gluc_summary <-
   tidy_data %>%
   drop_na(sex,
           blood_gluc) %>% #remove missing values to make less messy table
@@ -223,10 +299,21 @@ Tabel2 <-
     Upper = max(blood_gluc),
     Difference = max(blood_gluc) - min(blood_gluc)
   ) %>%
-  arrange(Average) %>%
+  arrange(Average)
+
+
+
+
+#Selected column summary (blood_cult, female, etc)
+tidy_data %>%       #tidyverse way
+  split(.$blood_cult) %>%
+  map(summary) %>% 
   view()
 
-
+#In order to make it for blood_cult == 0 use filter function (from Akash)
+tidy_data %>%
+  filter(blood_cult == 0) %>%
+  map(summary)
 ```
 
 
