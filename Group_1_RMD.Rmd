@@ -283,7 +283,7 @@ data_summary(tidy_data_age_45$csf_prot)
 
 
 
-```{r Day 6 Tasks IV}
+```{r Day 7 Tasks I}
 
 
 #View as table the relation of blood_gluc grouped by sex
@@ -300,8 +300,6 @@ data_summary(tidy_data_age_45$csf_prot)
     Difference = max(blood_gluc) - min(blood_gluc)
   ) %>%
   arrange(Average)
-
-
 
 
 #Selected column summary (blood_cult, female, etc)
