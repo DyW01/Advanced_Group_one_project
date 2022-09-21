@@ -77,3 +77,79 @@ view(tidy_data)
 
   
 
+<<<<<<< HEAD:Scripts/DYW_Exam_Script.R
+
+#Aditi 
+data_untidy <-
+  data_untidy %>% 
+  mutate(race = 
+           case_when(
+             race == "black" ~ "B",
+             race == "white" ~ "W",
+             race == "none" ~ NA_character_
+           ))
+
+
+
+
+
+
+
+#Aditi and Shwesin
+
+data_untidy %>% 
+  count(race)
+
+race_change %>% 
+  count(race)
+
+
+#arrange 
+data_untidy <-
+  data_untidy %>% 
+  #  arrange(id) %>% - arranging in ascending order
+  arrange(desc(id))
+
+
+#creating new columns by using a separator 
+data_untidy <-
+  data_untidy %>% 
+  separate(date, 
+           into = c("year", "month"),
+           sep="-")
+
+#Drop columns
+data_untidy <-
+  data_untidy %>% 
+  subset(select = -c(gram, year, month))
+
+head(data_untidy)
+
+#Rounding off decimal points for numeric
+mutate_data <-
+  data_untidy %>% 
+  #  mutate(across(where(is.numeric), ~ round(., 2)))
+  mutate(age = as.numeric(age)) %>% 
+  mutate(across(.cols = age, ~round(.,digits = 3)))
+
+
+
+#Day 6 - pipeline
+merged_exam_data <- 
+  data_untidy %>% 
+  mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
+  mutate(n_blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
+  mutate(n_blood_cult = round(n_blood_cult, digits = 0)) %>% 
+  mutate(n_sex = if_else(sex == "F", 1, 0)) %>% 
+  mutate(n_age_agm = age * abm ) %>% 
+  select(id,
+         sex,
+         age,
+         race,
+         starts_with("csf"),
+         starts_with("blood"),
+         everything()) %>% 
+  arrange(id) %>% 
+  full_join(join_data, by = "id")
+=======
+>>>>>>> Main_Branch_Exam_Group_One:Scripts/Participants_scripts/Day_1_to_4_scripts/Akash_script.R

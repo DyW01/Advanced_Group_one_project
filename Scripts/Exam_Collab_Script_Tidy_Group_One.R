@@ -8,6 +8,8 @@
 library(tidyverse)
 library(here)
 
+<<<<<<< HEAD
+=======
 #Step 1 improved method
 install.packages("pacman")
 #us this to install all together
@@ -25,10 +27,17 @@ for (p in packages) {
 pacman::p_load(ggplot2, tidyverse, here, fs)
 
 
+>>>>>>> Main_Branch_Exam_Group_One
 #Step 2 - Reading the text files, make sure directory is correct
 read_delim("exam_nontidy.txt", delim = "\t")
 read_delim("exam_joindata.txt", delim = "\t")
 
+<<<<<<< HEAD
+#Step 3 - assigning file an object
+my_data <- read_delim("exam_nontidy.txt", delim = "\t")
+my_join_data <- read_delim("exam_joindata.txt", delim = "\t")
+
+=======
 
 
 #########################DIRECTORY####################################
@@ -55,6 +64,7 @@ my_data <- read_delim("exam_nontidy.txt", delim = "\t")
 my_join_data <- read_delim("exam_joindata.txt", delim = "\t")
 
 
+>>>>>>> Main_Branch_Exam_Group_One
 #Step 4 - The Pipe setup of multiple tidy mutations and transfomation
 #----------------Will yield to the tidiest data -------------------#
 
@@ -65,7 +75,11 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   separate(date,                  #Better visualization be seperating column
            into = c("year", "month"),
            sep="-")%>%
+<<<<<<< HEAD
+  subset(select = -c(gram, year, month))%>%  #Removing excessive column
+=======
   subset(select = -c(gram, month))%>%  #Removing excessive column
+>>>>>>> Main_Branch_Exam_Group_One
   mutate(age = as.numeric(age)) %>%         #Defining column content as numerical
   mutate(across(.cols = age, ~round(.,digits = 3)))%>% #Keeping to three decimal
   mutate(race =                         #Abbreviating the content in column
@@ -86,13 +100,39 @@ tidy_data <- my_data%>%   #Assign our transformed data to object
   mutate(blood_wbc = round(blood_wbc, digits = 1))%>%     #keeping 1 decimal
   mutate(age_agm = age * abm )%>%   #numeric column showing multiplication of age and abm 
   select(id,
+<<<<<<< HEAD
+         sex,
+         age,
+=======
          age,
          sex,
+>>>>>>> Main_Branch_Exam_Group_One
          race,
          starts_with("csf"),
          starts_with("blood"),
          everything()) %>%
   full_join(my_join_data,by = ("id")) #joining the join data file to the mutated my_data
+<<<<<<< HEAD
+  
+
+#When everyone agrees, and if no more is to be added, we can code for savefile
+  
+view(tidy_data)
+
+
+
+a <- tidy_data %>% 
+  summarize_each(mean, na.rm = T) %>% 
+  summarize_each(min, na.rm = T) %>% 
+  summarize_each(max, na.rm = T) %>%
+  summarize_each(count, na.rm = T) %>% 
+  summarize_each(sd, na.rm = T)
+
+
+
+
+######## Akash script DAY 8
+=======
 
 view(tidy_data)
 
@@ -144,17 +184,39 @@ ggplot(tidy_data,  # define data
 
 
 #Does the glucose level in CSF (cerebrospinal fluid) depend on race?
+>>>>>>> Main_Branch_Exam_Group_One
 csf_gluc_race_grouped <- tidy_data %>%
   filter(race == "B" | race == "W" )%>%
   group_by(race)
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> Main_Branch_Exam_Group_One
 #calculate sum of csf_gluc per race
 csf_gluc_race_summary <- csf_gluc_race_grouped %>%
   summarise(sum =sum(csf_gluc, na.rm = TRUE))
 csf_gluc_race_summary
 
+<<<<<<< HEAD
+#ggplot
+my_plot1 <-
+  ggplot(csf_gluc_race_summary,
+         aes(x=as.factor(race), y=sum))+
+  geom_col(aes(fill = race), position = position_dodge())
+
+my_plot1_nicer <- my_plot1 +
+  scale_fill_brewer(type = "div",
+                    name = "Glucose in CSF") + # name of the legend
+  xlab("Race") +
+  ylab("CSF Glucose") +
+  labs(title = "CSF Glucose",
+       subtitle = "",
+       caption = "data source: Group 1")
+my_plot1
+my_plot1_nicer
+=======
 
 #Explore your data.
 #Explore and comment on the missing variables.
@@ -191,3 +253,4 @@ Time_trend1 <-
   summarise(prop = sum(abm, na.rm = T)) %>%
   lm(prop ~ year, data = .) %>%
   broom::tidy()
+>>>>>>> Main_Branch_Exam_Group_One

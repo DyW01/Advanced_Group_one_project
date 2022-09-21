@@ -41,37 +41,40 @@ pacman::p_load(ggplot2, tidyverse, here, fs)
 #Load file into work environment #Separate columns using delimiter ("tab" - \t)
 #setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project/Data")
 read_delim("exam_nontidy.txt", delim = "\t")
-data_untidy <- read_delim("exam_nontidy.txt", delim = "\t")
+
+
+
+not_tidy_data <- read_delim("exam_nontidy.txt", delim = "\t")
 new_data    <- read_delim("exam_nontidy.txt", delim = "\t")
 
-#view(data_untidy) - not recommended for large datasets
-head(data_untidy)
-glimpse(data_untidy)
+#view(tidy_data) - not recommended for large datasets
+head(tidy_data)
+glimpse(tidy_data)
 
 #########################SUMMARY STATS####################################
 #columns store values as <chr> which need to be converted to <numeric>
-data_untidy %>%
+tidy_data %>%
   distinct()
-data_untidy %>%
+tidy_data %>%
   count(date)
-summary(data_untidy)
+summary(tidy_data)
 
-data_untidy %>%
+tidy_data %>%
   summarize(max(blood_wbc, na.rm = T),
             min(blood_wbc, na.rm = T),
             mean(blood_wbc, na.rm = T))
 
 #checking for duplicates
-data_untidy %>%
+tidy_data %>%
   count(id, sort = TRUE)
 
 
 #Provides summary statistics - missing, complete, n and sd
 #<https://www.rdocumentation.org/packages/skimr/versions/2.1.4>
-skimr::skim(data_untidy)
+skimr::skim(tidy_data)
 
 #Graph showing frequency of missing for each variable
-naniar::gg_miss_var((data_untidy))
+naniar::gg_miss_var((tidy_data))
 
 
 
@@ -79,27 +82,27 @@ naniar::gg_miss_var((data_untidy))
 
 #Rename column name to "feature_type"
 #A good practice to change names which start with numbers or have spaces
-data_untidy <-
+tidy_data <-
   new_data %>%
   rename(feature_type = `feature type`,
          age = `1.age`)
 
-#Pivot "feature type" into "sex" and "race" data_untidy \<-
-data_untidy <-
-  data_untidy %>%
+#Pivot "feature type" into "sex" and "race" tidy_data \<-
+tidy_data <-
+  tidy_data %>%
   pivot_wider(names_from  = feature_type,
               values_from = feature_value)
 
 #viewing chosen columns
-data_untidy %>%
+tidy_data %>%
   select(id, age, date) %>%
   head()
 
 
 #changing order of columns
 #not ending with everything() removes the other columns
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   select(id,
          sex,
          race,
@@ -108,35 +111,35 @@ data_untidy <-
          everything())
 
 #Turning a string column into numeric
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   mutate(csf_prot = as.numeric(csf_prot))
 
 
 #Rounding off decimal points for numeric
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   # mutate(across(where(is.numeric), \~ round(., 2)))
   mutate(across(.cols = age, ~ round(., digits = 3))) %>%
   mutate(age = as.numeric(age))
 
 #Creating a new ID column
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   mutate(ID_new = 1:n())
 
 #Comparison of two columns
-data_untidy %>%
+tidy_data %>%
   select(id, ID_new) %>%
   mutate(if_else(as.character(id) == as.character(ID_new), "equal", "different"))
 
 #Removes column "ID_new"
-data_untidy <- subset(data_untidy, select = -c(ID_new))
+tidy_data <- subset(tidy_data, select = -c(ID_new))
 
 
 #creating new columns by using a separator
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   separate(date, into = c("year", "month"), sep = "-")
 
 #removes dataset from the evironment
@@ -144,8 +147,8 @@ data_untidy <-
 
 
 #Ifelse and case_when 
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   mutate(sex = if_else(sex == "female", "F", "M")) %>%
   mutate(race = case_when(
     race == "black" ~ "black",
@@ -154,13 +157,13 @@ data_untidy <-
   ))
 
 #Arranging/sorting
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   arrange(id)
 #  arrange(desc(id))
 
 
-head(data_untidy)
+head(tidy_data)
 
 
 #########################MERGING####################################
@@ -179,12 +182,12 @@ merged_data <-
 
 #########################COMBINING USING PIPELINE####################################
 #Drop columns
-data_untidy <-
-  data_untidy %>%
+tidy_data <-
+  tidy_data %>%
   subset(select = -c(gram, year, month))
 
-merged_exam_data <- 
-  data_untidy %>% 
+tidy_data <- 
+  tidy_data %>% 
   mutate(n_blood_neut_pct = if_else(blood_neut_pct <= 35, "Low", "High" )) %>% 
   mutate(n_blood_cult = 100*blood_cult/max(blood_cult, na.rm = TRUE)) %>% 
   mutate(n_blood_cult = round(n_blood_cult, digits = 0)) %>% 
@@ -197,12 +200,69 @@ merged_exam_data <-
          starts_with("csf"),
          starts_with("blood"),
          everything()) %>% 
-  arrange(id) %>% 
+  arrange(id)
+
+%>% 
   full_join(join_data, by = "id")
 
 #Data exploration
 file <- merged_exam_data
 skimr::skim(file) 
 naniar::gg_miss_var(file)
+
+
+summarize(consultations_gp)
+
+
+tidy_data %>%
+  group_by(race) %>% 
+  summarise(across(where(is.numeric), mean))
+
+
+            
+    
+
+
+head(tidy_data)
+
+
+# Comment on the missing variables
+# Stratify your data by a categorical column and report min, max, mean and sd of a numeric column.
+# Stratify your data by a categorical column and report min, max, mean and sd of a numeric column for a defined set of observations - use pipe!
+#   Only for persons with `blood_cult == 0`
+# Only for females
+# Only for persons older than 45
+# Only for persons classified as black and blood_gluc higher than 120
+# Use two categorical columns in your dataset to create a table (hint: ?count)
+
+
+###########################DECLUTTER AND EXPLAIN GRAPHS############################
+
+
+#4. Day 7: Create plots that would help answer these questions:
+#  _(each person chooses min.one question)_
+#- Are there any correlated measurements?
+#  - Does the glucose level in blood depend on sex?
+#  - Does the glucose level in blood depend on race?
+#  - Does the glucose level in CSF (cerebrospinal fluid) depend on sex?
+#  - Does the glucose level in CSF (cerebrospinal fluid) depend on race?
+  
+#  4. Day 8: Analyse the dataset and answer the following questions:
+#  _(each person chooses one question)_
+
+#- Is there a difference in the occurrence of the disease by sex?
+#  - Does the occurrence of the disease depend on age?
+#  - Is there a difference in the occurrence of the disease by race?
+#  - Is there a time trend in the occurrence of the disease?
+
+
+
+
+
+
+
+
+
+
 
 
