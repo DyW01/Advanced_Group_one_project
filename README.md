@@ -23,6 +23,10 @@
 #    │   └── Day_7&8
 ```
 
+# [![Clean all the data](images/68747470733a2f2f692e63687a6267722e636f6d2f66756c6c2f383132303830383434382f6832453138434133372f636c65616e2d616c6c2d7468652d64617461.jpg){width="419"}](https://notebooks.githubusercontent.com/view/ipynb?browser=chrome&color_mode=auto&commit=fccb1ae7fff7a9bfdb2d1a27e28ee5b5152eddf6&device=unknown&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5369646465736853616d6261736976616d2f4e54554f53532d446174615363726170696e672d416e642d44617461436c65616e696e672d576f726b73686f702f666363623161653766666637613962666462326431613237653238656535623531353265646466362f44617461253230436c65616e696e672e6970796e62&logged_in=false&nwo=SiddeshSambasivam%2FNTUOSS-DataScraping-And-DataCleaning-Workshop&path=Data+Cleaning.ipynb&platform=android&repository_id=294354232&repository_type=Repository&version=101)
+
+This meme solidifies our commitment to tidying and describing data before we go on to analyzing it.
+
 # Exam
 
 -   We have two cases of acute meningitis:
