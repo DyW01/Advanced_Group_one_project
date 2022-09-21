@@ -1,36 +1,28 @@
 ---
-title: "Exam"
-author: 'Group_1 : Aditi, Shwesin, Theo, Akash and Daanyaal'
+title: "RMED900 22H Exam"
+author: 'Group 1 : Aditi, Shwesin, Theo, Akash and Daanyaal'
 date: "2022-09-16"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+#Note that the echo = FALSE parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 ```
 
+## **Prelude**
+
+As a group we have divided the tasks between each other. Through each others mistakes, we have learned a lot. The road is visible. Now we have produced a final recipe to tidy this specific data.
 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
-
-#As a group we have devided the tasks between each other
-#through each others mistakes we have learnt
-#The road is visible in script DYW_Exam_Script
-#Now we have produced a final recipe to tidy this specific data
-#---------------------- Refined script and steps -----------------------------#
-
-
-**Packages**
+## **Packages**
 
 -   [`Reference - ways to load and install packages`](https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/){.uri}
 
+```{r Install and load packages - Alternative 1, include= FALSE}
 
-```{r Install and load packages - Alternative 1}
-
-#List of packages
 #install.packages(c(tidyverse, ggplot2, here, pacman))
 library(tidyverse)
 library(here)
@@ -43,10 +35,10 @@ library(knitr)
 
 
 
-** Directory and Environment **
-  
-  -`Ctrl+Shift+A` to reformat code in the code chunks / R script file
--   `Ctrl+Shift+M` for `%>%`
+
+## **Directory and Environment**
+
+-   `Ctrl+Shift+A` to reformat code in the code chunks / R script file - `Ctrl+Shift+M` for `%>%`
 
 ```{r}
 #getwd()  - current directory
@@ -58,50 +50,87 @@ library(knitr)
 #dir_tree(here()) - draws a tree of the current directory
 ```
 
-** File **
-  
-  -Loading file into the environment
--   Viewing file + summary stats + missing
--   Data manipulation
+
+
+
+## **Reading files**
+
+-   This is the code to read files from the `working directory` and load them into the `environment`.
 
 ```{r Load file, include = FALSE}
 
-#Step 2 - Reading the text files, make sure directory is correct
+#Make sure directory is correct
 #Load file into work environment
 #Separate columns using delimiter ("tab" - \t)
 #Set working directory setwd() if things are not working
 
 here()
-setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project/Data")
-nontidy_data <- read_delim("exam_nontidy.txt", delim = "\t")
+setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project")
+nontidy_data <- read_delim("Data/exam_nontidy.txt", delim = "\t")
 tidy_data <- nontidy_data
-join_data <- read_delim("exam_joindata.txt", delim = "\t")
-
+join_data <- read_delim("Data/exam_joindata.txt", delim = "\t")
 
 ```
 
-```{r Viewing file,}
+
+
+
+## **Viewing files and data sets**
+
+```{r Viewing file}
 
 #view(tidy_data) #not advised for large data structures
 head(tidy_data)
-glimpse(tidy_data)
-
-#Provides summary statistics - missing, complete, n and sd
-#<https://www.rdocumentation.org/packages/skimr/versions/2.1.4>
-skimr::skim(tidy_data)
-
-#Graph showing frequency of missing for each variable
-naniar::gg_miss_var((tidy_data))
-
-#column names
-colnames(tidy_data)
+#glimpse(tidy_data)
 
 ```
 
 
+
+
+## **Summary statistics**
+
+```{r}
+#Provides summary statistics - missing, complete, n and sd
+#<https://www.rdocumentation.org/packages/skimr/versions/2.1.4>
+#skimr::skim(tidy_data)
+
+```
+
+
+
+
+## **Missing values**
+
+```{r}
+#Graph showing frequency of missing for each variable
+naniar::gg_miss_var((tidy_data))
+
+```
+
+
+
+
+## **Column names**
+
+```{r}
+#column names
+colnames(tidy_data)
+
+
+```
+
+
+
+
+# **Tidying the data**
+
+# [![Clean all the data](images/68747470733a2f2f692e63687a6267722e636f6d2f66756c6c2f383132303830383434382f6832453138434133372f636c65616e2d616c6c2d7468652d64617461.jpg){width="419"}](https://notebooks.githubusercontent.com/view/ipynb?browser=chrome&color_mode=auto&commit=fccb1ae7fff7a9bfdb2d1a27e28ee5b5152eddf6&device=unknown&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5369646465736853616d6261736976616d2f4e54554f53532d446174615363726170696e672d416e642d44617461436c65616e696e672d576f726b73686f702f666363623161653766666637613962666462326431613237653238656535623531353265646466362f44617461253230436c65616e696e672e6970796e62&logged_in=false&nwo=SiddeshSambasivam%2FNTUOSS-DataScraping-And-DataCleaning-Workshop&path=Data+Cleaning.ipynb&platform=android&repository_id=294354232&repository_type=Repository&version=101)
+
+This meme solidifies our commitment to tidying and describing data before we go on to analyzing it.
+
 ```{r Data wrangling and tidying}
 
-#Day 6 Oppgave
 #The Pipe setup of multiple tidy mutations and transformation
 #----------------Will yield to the tidiest data -------------------#
 
@@ -155,6 +184,10 @@ tidy_data[, factor_cols] <-
 ```
 
 
+
+
+## **Saving files**
+
 ```{r Saving file}
 
 #Check path/ directory before saving
@@ -163,36 +196,54 @@ tidy_data[, factor_cols] <-
 ```
 
 
-```{r Missing data after tidying the data}
 
-skimr::skim(tidy_data) #Check the complete rate - all rows have an id
-naniar::gg_miss_var((tidy_data)) # Graphing the missing data
-#The variables "blood_cult" and "csf_cult" have the most missing data (give information on growth of bacteria in the blood and CSF respectively)
+
+## **After cleaning, the data looks better**
+
+The variables `"blood_cult"` and `"csf_cult"` have the highest proportion of missing. The data set consists of 20 columns and 581 rows.
+
+```{r Missing data after tidying the data I }
+skimr::skim(tidy_data) #Tidyverse way
+#summary(tidy_data) #R base function
 
 ```
 
 
-```{r Day 6 Tasks I}
 
+
+## **How to count? AKA the frequency**
+
+-   This is how we calculated the number of individuals regardless of meningitis status by `race` and `sex.`
+
+```{r Day 6 Tasks I}
 #frequency/count for each subgroup
 tidy_data %>%
   group_by(race, sex) %>%
+  filter(!is.na(race) & !is.na(sex)) %>% 
   count() %>%
   rename(total = n)
 
-#Table
-table(tidy_data$race, tidy_data$sex) %>%
-  head()
-
-
-#Explore and comment on the missing variables.
-naniar::gg_miss_var((tidy_data))
-summary(tidy_data) #R base function
-skimr::skim(tidy_data) #Tidyverse way
-
-
+#Table in R base function format
+#table(tidy_data$race, tidy_data$sex) %>% head()
 
 ```
+
+
+
+
+## **Summary statistics - [`WBC (white blood cells) in blood`]{.underline}**
+
+-   Here are the summary statistics for `"blood_wbc"`
+
+    -   Maximum
+
+    -   Mean
+
+    -   Minimum
+
+    -   Standard deviation
+
+### ... by sex
 
 ```{r Day 6 Tasks II, warning = FALSE}
 
@@ -201,16 +252,24 @@ skimr::skim(tidy_data) #Tidyverse way
 #blood_wbc_sex <-
 tidy_data %>%
   group_by(sex) %>%
+  filter(!is.na(sex)) %>% 
   summarise(
     max_blood_wbc = max(blood_wbc, na.rm = T),
     min_blood_wbc = min(blood_wbc, na.rm = T),
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
   )
+
+```
+
+### ... by race
+
+```{r}
 
 #blood_wbc_race <-
 tidy_data %>%
   group_by(race) %>%
+  filter(!is.na(race)) %>% 
   summarise(
     max_blood_wbc = max(blood_wbc, na.rm = T),
     min_blood_wbc = min(blood_wbc, na.rm = T),
@@ -218,6 +277,11 @@ tidy_data %>%
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
   )
 
+```
+
+### ... by sex and race
+
+```{r}
 #blood_wbc_race_sex <-
 tidy_data %>%
   filter(!is.na(race) &
@@ -231,6 +295,13 @@ tidy_data %>%
     .groups = 'drop'
   ) # Adding this to remove the warning : https://stackoverflow.com/questions/62140483/how-to-interpret-dplyr-message-summarise-regrouping-output-by-x-override
 ```
+
+
+
+
+## **More data analysis --\> Summary statistics - [`Protein in CSF`]{.underline}**
+
+### ... if blood culture is absent
 
 ```{r Day 6 Tasks III}
 
@@ -246,6 +317,13 @@ tidy_data %>%
     sd_csf_prot = sd(csf_prot, na.rm = T)
   )
 
+
+```
+
+### ... in females
+
+```{r}
+
 #   females
 tidy_data %>%
   filter(sex == 0) %>%
@@ -257,7 +335,11 @@ tidy_data %>%
   )
 
 
+```
 
+### ... in individuals with the race black and blood glucose higher than 120
+
+```{r}
 
 #   race black and blood_gluc higher than 120
 tidy_data %>%
@@ -270,6 +352,11 @@ tidy_data %>%
   )
 
 
+```
+
+### ... in individuals older than 45 years of age
+
+```{r}
 #   persons older than 45
 #Since there is repetition, we decided to create a function to fo this job for us.
 data_summary <- function(y) {
@@ -288,12 +375,18 @@ data_summary <- function(y) {
 tidy_data_age_45 <- tidy_data %>%
   filter(age >= 45)
 data_summary(tidy_data_age_45$csf_prot)
-
 ```
 
 
 
-```{r Day 7 Tasks I}
+
+## **Even moooorrrre data analysis --\> Correlations**
+
+To identify correlated variables, we identified and dropped variables with the highest amount of missing data.
+
+Using the library `corrplot`, we plotted the **correlations** obtained using the function `cor` to understand how the variables are correlated to each other.
+
+```{r Day 7 Tasks I, include=TRUE}
 #    - Are there any correlated measurements?
 
 # We decided to plot a correlation matrix
@@ -301,14 +394,19 @@ data_summary(tidy_data_age_45$csf_prot)
 #https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html
 
 df <- select(tidy_data,-("id")) #removing ID
-df <-
-  select(df,-("blood_cult")) #removing "blood_cult" since it has a lot of missing values
+df <-  select(df,-("blood_cult")) #removing "blood_cult" since it has a lot of missing values
 df <- df[sapply(df, is.numeric)] #making all variables numeric
-df <-
-  df[complete.cases(df), ] #ensuring only those rows with complete information in all columns are included
-
+df <-  df[complete.cases(df), ] #ensuring only those rows with complete information in all columns are included
 cor(df, method = "pearson" , use = "complete.obs") #A correlation matrix for all variables
-naniar::gg_miss_var((df)) # Graphing the missing data - none missing
+
+```
+
+
+
+
+## **And now, our Correlation plot `corrplot`**
+
+```{r}
 
 #install.packages("corrplot")
 library(corrplot) #can help graphically visualize the correlation plots
@@ -333,9 +431,16 @@ corrplot(
   order = 'AOE',
   diag = FALSE
 )
-
 ```
 
+
+
+
+## **Summary statistics - [`Blood glucose levels`]{.underline}**
+
+### ... by sex
+
+The average blood glucose level is higher in women compared to men.
 
 ```{r Day 7 Task II}
 #    - Does the glucose level in blood depend on sex?
@@ -368,7 +473,9 @@ tidy_data %>%
 
 ```
 
+### ... by race
 
+-   \... but this difference is not evident among the different races.
 
 ```{r Day 7 Task III}
 #    - Does the glucose level in blood depend on race?
@@ -401,6 +508,12 @@ tidy_data %>%
 
 ```
 
+
+
+
+## **Summary statistics - [`CSF glucose levels`]{.underline}**
+
+### ... by race and sex
 
 ```{r Day 7 Task IV}
 #    - Does the glucose level in CSF (cerebrospinal fluid) depend on sex?
@@ -437,6 +550,9 @@ csf_gluc_race_summary
 
 
 
+
+## **Does the occurrence of the diseases differ by sex?**
+
 ```{r Day 8 Task I}
 
 #   - Is there a difference in the occurrence of the disease by sex?
@@ -448,11 +564,16 @@ tidy_data_4chisq <- tidy_data %>%
 #In this test, make sure both variables are same class/type
 chisq.test(tidy_data_4chisq$abm, tidy_data_4chisq$sex)
 
-
-
+#In this case, the test is not significant. 
 
 ```
 
+
+
+
+## **Time trend of meningitis**
+
+The highest number of observations were recorded in 1978, and the data showed an increasing trend across time until 1978.
 
 ```{r Day 8 Task II}
 #   - Is there a time trend in the occurrence of the disease?
@@ -461,6 +582,7 @@ tidy_data %>%
 group_by(year) %>%
   mutate(abm = as.numeric(abm)) %>%
   filter(!is.na(year)) %>%
+  filter(!is.na(abm)) %>% 
   #mutate abm into numeric since a factor cannot be summarized
   #doesn't understand statistics
   summarise(sum_abm = sum(abm, na.rm = T)) %>%
@@ -490,6 +612,11 @@ head(time_trend)
 ```
 
 
+
+
+## **Does the occurrence of the diseases differ by age or race?**
+
+Most of the cases of the disease occur in younger age groups, with a slight hump also visible at age 60. There is a higher number of black children and white adults that are affected by the disease.
 
 ```{r Day 8 Task III}
 

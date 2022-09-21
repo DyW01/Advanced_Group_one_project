@@ -71,6 +71,14 @@
 
 ### Day two
 
+```{r}
+    - Are there any correlated measurements? (AD)
+    - Does the glucose level in blood depend on sex? (SS)
+    - Does the glucose level in blood depend on race? (DYW)
+    - Does the glucose level in CSF (cerebrospinal fluid) depend on sex? (SS + THEO)
+    - Does the glucose level in CSF (cerebrospinal fluid) depend on race? (AK + THEO)
+```
+
 ### Day three and four
 
 ```{r}
@@ -93,4 +101,11 @@
 -   #Does the occurrence of the disease depend on age? (SS)
 -   #Is there a difference in the occurrence of the disease by race? (AD )
 -   #Is there a time trend in the occurrence of the disease? (AK +THEO)
+```
+
+### Day Five
+
+```{r}
+-   #We met in Haukeland Sykehus and worked on the project together. 
+-   #Discussion and code sharing on Teams due to problems accessing Github
 ```
