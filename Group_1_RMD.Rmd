@@ -3,11 +3,14 @@ title: "RMED900 22H Exam"
 author: 'Group 1 : Aditi, Shwesin, Theo, Akash and Daanyaal'
 date: "2022-09-16"
 output: html_document
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 #Note that the echo = FALSE parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#Adding warning = FALSE and message = FALSE
 ```
 
 ## **Prelude**
@@ -21,7 +24,7 @@ As a group we have divided the tasks between each other. Through each others mis
 
 -   [`Reference - ways to load and install packages`](https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/){.uri}
 
-```{r Install and load packages - Alternative 1, include= FALSE}
+```{r Install and load packages - Alternative 1}
 
 #install.packages(c(tidyverse, ggplot2, here, pacman))
 library(tidyverse)
@@ -57,20 +60,27 @@ library(knitr)
 
 -   This is the code to read files from the `working directory` and load them into the `environment`.
 
-```{r Load file, include = FALSE}
+```{r Setting the working directoy, include = FALSE}
+#Not recommended when sharing scripts. 
+setwd("C:/Users/asi006/Downloads/RMED/Hope/Advanced_Group_one_project")
+
+```
+
+```{r Load file}
 
 #Make sure directory is correct
 #Load file into work environment
 #Separate columns using delimiter ("tab" - \t)
 #Set working directory setwd() if things are not working
 
-here()
-setwd("C:/Users/asi006/Downloads/RMED/Advanced_Group_one_project")
+#here()
 nontidy_data <- read_delim("Data/exam_nontidy.txt", delim = "\t")
 tidy_data <- nontidy_data
 join_data <- read_delim("Data/exam_joindata.txt", delim = "\t")
 
 ```
+
+
 
 
 
@@ -88,12 +98,14 @@ head(tidy_data)
 
 
 
-## **Summary statistics**
+## **Summary statistics before tidying the data**
 
 ```{r}
 #Provides summary statistics - missing, complete, n and sd
 #<https://www.rdocumentation.org/packages/skimr/versions/2.1.4>
-#skimr::skim(tidy_data)
+skimr::skim(tidy_data) %>%
+  select(skim_type, skim_variable, numeric.mean, numeric.sd, numeric.p50, n_missing )
+
 
 ```
 
@@ -203,7 +215,9 @@ tidy_data[, factor_cols] <-
 The variables `"blood_cult"` and `"csf_cult"` have the highest proportion of missing. The data set consists of 20 columns and 581 rows.
 
 ```{r Missing data after tidying the data I }
-skimr::skim(tidy_data) #Tidyverse way
+skimr::skim(tidy_data) %>%  #Tidyverse way
+    select(skim_type, skim_variable, numeric.mean, numeric.sd, numeric.p50, n_missing )
+
 #summary(tidy_data) #R base function
 
 ```
