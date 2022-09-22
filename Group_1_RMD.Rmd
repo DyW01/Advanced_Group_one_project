@@ -61,8 +61,7 @@ library(knitr)
 -   This is the code to read files from the `working directory` and load them into the `environment`.
 
 ```{r Setting the working directoy, include = FALSE}
-#Not recommended when sharing scripts. 
-setwd("C:/Users/asi006/Downloads/RMED/Hope/Advanced_Group_one_project")
+#setwd("C:/Users/Icebe/OneDrive/Skrivebord/R statistics course/Tasks and other files/Advanced_Group_one_project") #Have to change the content between "C:/...." accordingly to ones own computer 
 
 ```
 
