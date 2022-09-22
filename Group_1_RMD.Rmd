@@ -2,9 +2,9 @@
 title: "RMED900 22H Exam"
 author: 'Group 1 : Aditi, Shwesin, Theo, Akash and Daanyaal'
 date: "2022-09-16"
-output: html_document
-editor_options: 
-  chunk_output_type: inline
+output:
+  html_document: default
+
 ---
 
 ```{r setup, include=FALSE}
