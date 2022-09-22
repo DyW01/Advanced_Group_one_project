@@ -409,8 +409,8 @@ script file - <code>Ctrl+Shift+M</code> for <code>%&gt;%</code></li>
 <h2><strong>Viewing files and data sets</strong></h2>
 <pre class="r"><code>#view(tidy_data) #not advised for large data structures
 head(tidy_data)</code></pre>
-<pre><code>## # A tibble: 6 × 19
-##      id date  `1.age` feature …¹ featu…² blood…³ blood…⁴ blood…⁵ blood…⁶ csf_p…⁷
+<pre><code>## # A tibble: 6 x 19
+##      id date  `1.age` feature ~1 featu~2 blood~3 blood~4 blood~5 blood~6 csf_p~7
 ##   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
 ## 1     1 78-1    4     race       black      6.5       50       4     165     304
 ## 2     1 78-1    4     sex        female     6.5       50       4     165     304
@@ -418,11 +418,11 @@ head(tidy_data)</code></pre>
 ## 4     2 78-12   1     sex        male       3.70      62       5     150      NA
 ## 5     3 78-3    0.800 race       black     NA         NA      NA     183      NA
 ## 6     3 78-3    0.800 sex        male      NA         NA      NA     183      NA
-## # … with 9 more variables: csf_rbc &lt;dbl&gt;, csf_wbc &lt;dbl&gt;, csf_neut_pct &lt;dbl&gt;,
+## # ... with 9 more variables: csf_rbc &lt;dbl&gt;, csf_wbc &lt;dbl&gt;, csf_neut_pct &lt;dbl&gt;,
 ## #   csf_lymph_pct &lt;dbl&gt;, gram &lt;dbl&gt;, csf_cult &lt;dbl&gt;, blood_cult &lt;dbl&gt;,
 ## #   abm &lt;dbl&gt;, csf_mono_cnt &lt;dbl&gt;, and abbreviated variable names
-## #   ¹​`feature type`, ²​feature_value, ³​blood_wbc, ⁴​blood_neut_pct,
-## #   ⁵​blood_band_pct, ⁶​blood_gluc, ⁷​csf_prot</code></pre>
+## #   1: `feature type`, 2: feature_value, 3: blood_wbc, 4: blood_neut_pct,
+## #   5: blood_band_pct, 6: blood_gluc, 7: csf_prot</code></pre>
 <pre class="r"><code>#glimpse(tidy_data)</code></pre>
 </div>
 <div id="summary-statistics" class="section level2">
@@ -620,19 +620,19 @@ columns and 581 rows.</p>
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="15%" />
+<col width="11%" />
+<col width="7%" />
 <col width="10%" />
-<col width="14%" />
-<col width="8%" />
-<col width="8%" />
+<col width="6%" />
+<col width="6%" />
+<col width="3%" />
+<col width="4%" />
 <col width="4%" />
 <col width="6%" />
 <col width="6%" />
-<col width="8%" />
-<col width="9%" />
-<col width="6%" />
+<col width="31%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -861,7 +861,7 @@ tidy_data %&gt;%
   filter(!is.na(race) &amp; !is.na(sex)) %&gt;% 
   count() %&gt;%
   rename(total = n)</code></pre>
-<pre><code>## # A tibble: 4 × 3
+<pre><code>## # A tibble: 4 x 3
 ## # Groups:   race, sex [4]
 ##   race  sex   total
 ##   &lt;fct&gt; &lt;fct&gt; &lt;int&gt;
@@ -898,7 +898,7 @@ tidy_data %&gt;%
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
   )</code></pre>
-<pre><code>## # A tibble: 2 × 5
+<pre><code>## # A tibble: 2 x 5
 ##   sex   max_blood_wbc min_blood_wbc mean_blood_wbc sd_blood_wbc
 ##   &lt;fct&gt;         &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;
 ## 1 0              72.4           0.6           14.5         9.58
@@ -916,7 +916,7 @@ tidy_data %&gt;%
     mean_blood_wbc = mean(blood_wbc, na.rm = T),
     sd_blood_wbc = sd(blood_wbc, na.rm = T)
   )</code></pre>
-<pre><code>## # A tibble: 2 × 5
+<pre><code>## # A tibble: 2 x 5
 ##   race  max_blood_wbc min_blood_wbc mean_blood_wbc sd_blood_wbc
 ##   &lt;fct&gt;         &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;
 ## 1 B              72.4           1.7           13.8         8.92
@@ -936,7 +936,7 @@ tidy_data %&gt;%
     sd_blood_wbc = sd(blood_wbc, na.rm = T),
     .groups = &#39;drop&#39;
   ) # Adding this to remove the warning : https://stackoverflow.com/questions/62140483/how-to-interpret-dplyr-message-summarise-regrouping-output-by-x-override</code></pre>
-<pre><code>## # A tibble: 4 × 6
+<pre><code>## # A tibble: 4 x 6
 ##   race  sex   max_blood_wbc min_blood_wbc mean_blood_wbc sd_blood_wbc
 ##   &lt;fct&gt; &lt;fct&gt;         &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;
 ## 1 B     0              72.4           3.5           14.7        10.2 
@@ -961,7 +961,7 @@ tidy_data %&gt;%
     mean_csf_prot = mean(csf_prot, na.rm = T),
     sd_csf_prot = sd(csf_prot, na.rm = T)
   )</code></pre>
-<pre><code>## # A tibble: 1 × 4
+<pre><code>## # A tibble: 1 x 4
 ##   max_csf_prot min_csf_prot mean_csf_prot sd_csf_prot
 ##          &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
 ## 1          680           18          176.        153.</code></pre>
@@ -977,7 +977,7 @@ tidy_data %&gt;%
     mean_csf_prot = mean(csf_prot, na.rm = T),
     sd_csf_prot = sd(csf_prot, na.rm = T)
   )</code></pre>
-<pre><code>## # A tibble: 1 × 4
+<pre><code>## # A tibble: 1 x 4
 ##   max_csf_prot min_csf_prot mean_csf_prot sd_csf_prot
 ##          &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
 ## 1         1488            1          146.        208.</code></pre>
@@ -994,7 +994,7 @@ tidy_data %&gt;%
     mean_csf_prot = mean(csf_prot, na.rm = T),
     sd_csf_prot = sd(csf_prot, na.rm = T)
   )</code></pre>
-<pre><code>## # A tibble: 1 × 4
+<pre><code>## # A tibble: 1 x 4
 ##   max_csf_prot min_csf_prot mean_csf_prot sd_csf_prot
 ##          &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
 ## 1         1740            3          186.        239.</code></pre>
@@ -1019,7 +1019,7 @@ data_summary &lt;- function(y) {
 tidy_data_age_45 &lt;- tidy_data %&gt;%
   filter(age &gt;= 45)
 data_summary(tidy_data_age_45$csf_prot)</code></pre>
-<pre><code>## # A tibble: 4 × 2
+<pre><code>## # A tibble: 4 x 2
 ##   col_    data_
 ##   &lt;chr&gt;   &lt;dbl&gt;
 ## 1 Maximum 1152 
@@ -1096,6 +1096,7 @@ cor(df, method = &quot;pearson&quot; , use = &quot;complete.obs&quot;) #A correl
 <code>corrplot</code></strong></h2>
 <pre class="r"><code>#install.packages(&quot;corrplot&quot;)
 library(corrplot) #can help graphically visualize the correlation plots</code></pre>
+<pre><code>## Warning: package &#39;corrplot&#39; was built under R version 4.1.3</code></pre>
 <pre><code>## corrplot 0.92 loaded</code></pre>
 <pre class="r"><code>corrplot(
   cor(df),
@@ -1140,7 +1141,7 @@ tidy_data %&gt;%
     sd_blood_gluc = sd(blood_gluc)
   ) %&gt;%
   arrange()</code></pre>
-<pre><code>## # A tibble: 2 × 5
+<pre><code>## # A tibble: 2 x 5
 ##   sex   min_blood_gluc mean_blood_gluc max_blood_gluc sd_blood_gluc
 ##   &lt;fct&gt;          &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
 ## 1 0                 35            143.            410          62.5
@@ -1180,7 +1181,7 @@ tidy_data %&gt;%
     sd_blood_gluc = sd(blood_gluc)
   ) %&gt;%
   arrange()</code></pre>
-<pre><code>## # A tibble: 2 × 5
+<pre><code>## # A tibble: 2 x 5
 ##   race  min_blood_gluc mean_blood_gluc max_blood_gluc sd_blood_gluc
 ##   &lt;fct&gt;          &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
 ## 1 B                 35            138.            380          51.9
@@ -1235,7 +1236,7 @@ csf_gluc_race_grouped &lt;- tidy_data %&gt;%
 csf_gluc_race_summary &lt;- csf_gluc_race_grouped %&gt;%
   summarise(sum = sum(csf_gluc, na.rm = TRUE))
 csf_gluc_race_summary</code></pre>
-<pre><code>## # A tibble: 2 × 2
+<pre><code>## # A tibble: 2 x 2
 ##   race     sum
 ##   &lt;fct&gt;  &lt;dbl&gt;
 ## 1 B     15662.
@@ -1295,7 +1296,7 @@ time_trend &lt;-
   lm(sum_abm ~ year, data = .) %&gt;%
   broom::tidy()
 head(time_trend)</code></pre>
-<pre><code>## # A tibble: 2 × 5
+<pre><code>## # A tibble: 2 x 5
 ##   term        estimate std.error statistic p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 (Intercept)   42.6       27.0      1.58    0.141
