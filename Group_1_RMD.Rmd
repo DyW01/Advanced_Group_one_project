@@ -72,10 +72,10 @@ library(knitr)
 #Separate columns using delimiter ("tab" - \t)
 #Set working directory setwd() if things are not working
 
-#here()
-nontidy_data <- read_delim("Data/exam_nontidy.txt", delim = "\t")
+#using here instead of setwd()
+nontidy_data <- read_delim(here("DATA", "exam_nontidy.txt"), delim = "\t")
 tidy_data <- nontidy_data
-join_data <- read_delim("Data/exam_joindata.txt", delim = "\t")
+join_data <- read_delim(here("DATA",  "exam_joindata.txt"), delim = "\t")
 
 ```
 
