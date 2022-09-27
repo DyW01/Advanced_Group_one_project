@@ -431,19 +431,7 @@ corrplot(
   tl.srt = 45
 )
 
-#only those with p-value < 0.05
-testRes = cor.mtest(df, conf.level = 0.95)
-corrplot(
-  cor(df),
-  p.mat = testRes$p,
-  method = 'circle',
-  type = 'lower',
-  insig = 'blank',
-  addCoef.col = 'black',
-  number.cex = 0.8,
-  order = 'AOE',
-  diag = FALSE
-)
+
 ```
 
 
